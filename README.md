@@ -9,6 +9,9 @@
 - delete a user
 - login a user
 
+### Image Route
+- upload an image
+
 ### Movie Route
 - register a movie (admin only)
 - get some movies by keyword
@@ -24,6 +27,12 @@
 - register an artist
 - update an artist
 - delete an artist
+
+### Director Route (admin only)
+- get all directors
+- register a director
+- update a director
+- delete a director
 
 ### Genre Route (admin only)
 - get all genres
