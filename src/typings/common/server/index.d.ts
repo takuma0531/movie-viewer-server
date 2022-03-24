@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-interface serverComponents {
+interface ServerComponents {
   host: string;
   port: string;
   middlewares: Array<any>;
@@ -12,4 +12,4 @@ interface Route {
   router: Router;
 }
 
-export { serverComponents, Route };
+export { ServerComponents, Route };

@@ -1,11 +1,12 @@
 import express from "express";
 import cors from "cors";
-import { serverComponents } from "./typings/common/server";
+import { ServerComponents } from "./typings/common/server";
 import { Server } from "./Server";
+import { ServerConstants } from "./config/constants";
 
-const serverComponents: serverComponents = {
-  host: "http:/localhost",
-  port: "5000",
+const serverComponents: ServerComponents = {
+  host: ServerConstants.SERVER_HOST,
+  port: ServerConstants.SERVER_PORT,
   middlewares: [express.json(), cors()],
   routes: [],
 };

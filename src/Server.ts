@@ -1,12 +1,12 @@
 import express, { Express } from "express";
-import { serverComponents, Route } from "./typings/common/server";
+import { ServerComponents, Route } from "./typings/common/server";
 
 export class Server {
   private readonly _app: Express;
   private readonly _port: string;
   private readonly _host: string;
 
-  constructor(serverComponents: serverComponents) {
+  constructor(serverComponents: ServerComponents) {
     this._app = express();
     this._host = serverComponents.host;
     this._port = serverComponents.port;
