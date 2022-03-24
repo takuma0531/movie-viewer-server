@@ -1,22 +1,22 @@
 import { Request, Response, NextFunction, Router } from "express";
-// controller
+import { userController } from "../dependencyInjection/user";
 // authorization as middle
+import { use } from "../utils/ErrorHandling";
 
 const router = Router();
 
-router.get("/", (req: Request, res: Response) => res.send(200));
+router.get("/", use(userController.getAllUsers));
 
-// search?name=""
-router.get("/search", (req: Request, res: Response) => res.send(req.query));
+router.get("/search", use(userController.getUsersByName));
 
-router.get("/:id", (req: Request, res: Response) => res.send(req.params.id));
+router.get("/:id", use(userController.getUserById));
 
-router.post("/", (req: Request, res: Response) => res.send(req.body));
+router.post("/", use(userController.createUser));
 
-router.put("/", (req: Request, res: Response) => res.send(req.body));
+router.put("/", use(userController.updateUser));
 
-router.post("/login", (req: Request, res: Response) => res.send(req.body));
+router.post("/login", use(userController.loginUser));
 
-router.delete("/", (req: Request, res: Response) => res.send(200));
+router.delete("/", use(userController.deleteUser));
 
 export { router };
