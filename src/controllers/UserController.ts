@@ -109,8 +109,9 @@ export class UserController extends BaseController {
   // @access    private
   public async returnAuthorizedResult(req: Request, res: Response) {
     try {
-      const authorizedResult = this._userService.getAuthResult({});
-      return super.ok(res, authorizedResult);
+      //   const authorizedResult = this._userService.getAuthResult({});
+      //   return super.ok(res, authorizedResult);
+      return super.ok(res);
     } catch (err: any) {
       return super.internalServerError(res, err);
     }

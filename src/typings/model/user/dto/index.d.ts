@@ -3,7 +3,6 @@ import { User } from "../";
 
 export interface UserReadDto extends BaseReadDto {
   email: User["email"];
-  words: User["words"];
   name: User["name"];
   country: User["country"];
   continent: User["continent"];

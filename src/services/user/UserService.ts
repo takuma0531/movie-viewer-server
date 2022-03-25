@@ -7,43 +7,70 @@ import {
   UserUpdateDto,
 } from "../../typings/model/user/dto";
 import { CustomJwtPayload } from "../../typings/common/jwt";
+import { IUserRepository } from "../../db/repositories/user/IUserRepository";
 
 export class UserService implements IUserService {
-  constructor() {
-    // DI of repository and token service
+  constructor(private readonly _userRepository: IUserRepository) {
+    // DI of token service
   }
 
   public async getAllUsers(): Promise<UserReadDto[]> {
-    return await [];
+    const userReadDtos = await this._userRepository.getAll();
+    return userReadDtos;
   }
 
-  public async getUsersByName(name: string): Promise<UserReadDto[]> {
-    return await [];
+  public async getUsersByName(name: string): Promise<UserReadDto[] | null> {
+    const userReadDtos = await this._userRepository.getSomeByName(name);
+    return userReadDtos;
   }
 
   public async getUserById(id: string): Promise<UserReadDto | null> {
-    return await null;
+    const userReadDto = await this._userRepository.getById(id);
+    return userReadDto;
   }
 
-  public async createUser(userCreateDto: UserCreateDto): Promise<UserReadDto> {
-    return await {};
+  public async createUser(
+    userCreateDto: UserCreateDto
+  ): Promise<UserReadDto | null> {
+    // TODO:
+    // const userReadDto = await this._userRepository.add();
+    // return userReadDto;
+    return null;
   }
 
-  public async updateUser(userUpdateDto: UserUpdateDto): Promise<UserReadDto> {
-    return await {};
+  public async updateUser(
+    userUpdateDto: UserUpdateDto
+  ): Promise<UserReadDto | null> {
+    const userDocument = await this._userRepository.updateById(
+      userUpdateDto.id!,
+      userUpdateDto
+    );
+    return userDocument;
   }
 
   public async loginUser(
     userLoginRequestDto: UserLoginRequestDto
   ): Promise<AuthorizedResult> {
-    return await {};
+    // TODO:
+    return {
+      token: null,
+      expireIn: null,
+      isAuthorized: false,
+    };
   }
 
-  public async deleteUser(id: string): Promise<void> {}
+  public async deleteUser(id: string): Promise<void> {
+    await this._userRepository.removeById(id);
+  }
 
   public async getAuthResult(
     payload: CustomJwtPayload
   ): Promise<AuthorizedResult> {
-    return await {};
+    // TODO:
+    return {
+      token: null,
+      expireIn: null,
+      isAuthorized: false,
+    };
   }
 }
