@@ -1,22 +1,39 @@
 import { Request, Response, NextFunction, Router } from "express";
 import { userController } from "../dependencyInjection/user";
 // authorization as middle
-import { use } from "../utils/ErrorHandling";
 
 const router = Router();
 
-router.get("/", use(userController.getAllUsers));
+router.get("/", (req: Request, res: Response) =>
+  userController.getAllUsers(req, res)
+);
 
-router.get("/search", use(userController.getUsersByName));
+router.get("/search", (req: Request, res: Response) =>
+  userController.getUsersByName(req, res)
+);
 
-router.get("/:id", use(userController.getUserById));
+router.get("/user/:id", (req: Request, res: Response) =>
+  userController.getUserById(req, res)
+);
 
-router.post("/", use(userController.createUser));
+router.post("/", (req: Request, res: Response) =>
+  userController.createUser(req, res)
+);
 
-router.put("/", use(userController.updateUser));
+router.put("/", (req: Request, res: Response) =>
+  userController.updateUser(req, res)
+);
 
-router.post("/login", use(userController.loginUser));
+router.post("/login", (req: Request, res: Response) =>
+  userController.loginUser(req, res)
+);
 
-router.delete("/", use(userController.deleteUser));
+router.delete("/", (req: Request, res: Response) =>
+  userController.deleteUser(req, res)
+);
+
+router.get("/check-auth", (req: Request, res: Response) =>
+  userController.returnAuthorizedResult(req, res)
+);
 
 export { router };

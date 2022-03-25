@@ -13,12 +13,11 @@ import {
   ratingRouter,
   userRouter,
 } from "./routes";
-import { catchError } from "./utils/ErrorHandling";
 
 const serverComponents: ServerComponents = {
   host: ServerConstants.SERVER_HOST,
   port: ServerConstants.SERVER_PORT,
-  middlewares: [express.json(), cors(), catchError],
+  middlewares: [express.json(), cors()],
   routes: [
     {
       baseRoute: "/api/v1",
