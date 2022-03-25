@@ -8,14 +8,14 @@ import {
 import { CustomJwtPayload } from "../../typings/common/jwt";
 
 export interface IUserService {
-  getAllUsers(): Promise<object[]>;
-  getUsersByName(name: string): Promise<object[]>;
-  getUserById(id: string): Promise<object>;
-  createUser(userCreateDto: object): Promise<object>;
-  updateUser(userUpdateDto: object): Promise<object>;
+  getAllUsers(): Promise<UserReadDto[]>;
+  getUsersByName(name: string): Promise<UserReadDto[]>;
+  getUserById(id: string): Promise<UserReadDto | null>;
+  createUser(userCreateDto: UserCreateDto): Promise<UserReadDto>;
+  updateUser(userUpdateDto: UserUpdateDto): Promise<UserReadDto>;
   loginUser(
-    userLoginRequestDto: object
-  ): Promise<object>;
+    userLoginRequestDto: UserLoginRequestDto
+  ): Promise<AuthorizedResult>;
   deleteUser(id: string): Promise<void>;
-  getAuthResult(payload: object): Promise<object>;
+  getAuthResult(payload: CustomJwtPayload): Promise<AuthorizedResult>;
 }

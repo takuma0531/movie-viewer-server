@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { IUserService } from "../services/user/IUserService";
 import { BaseController } from "./BaseController";
 
+// TODO: subject to change
 export class UserController extends BaseController {
   constructor(private readonly _userService: IUserService) {
     super();
@@ -25,7 +26,7 @@ export class UserController extends BaseController {
   public async getUsersByName(req: Request, res: Response) {
     try {
       const { name } = req.query;
-      const userReadDtos: object[] = await this._userService.getUsersByName(
+      const userReadDtos = await this._userService.getUsersByName(
         name as string
       );
       return super.ok(res, userReadDtos);
@@ -108,7 +109,6 @@ export class UserController extends BaseController {
   // @access    private
   public async returnAuthorizedResult(req: Request, res: Response) {
     try {
-      console.log("check-auth controller method");
       const authorizedResult = this._userService.getAuthResult({});
       return super.ok(res, authorizedResult);
     } catch (err: any) {

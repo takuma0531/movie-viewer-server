@@ -13,39 +13,37 @@ export class UserService implements IUserService {
     // DI of repository and token service
   }
 
-  public async getAllUsers(): Promise<object[]> {
-    return await [
-      { id: "1", email: "test1@email.com" },
-      { id: "2", email: "test2@email.com" },
-    ];
+  public async getAllUsers(): Promise<UserReadDto[]> {
+    return await [];
   }
 
-  public async getUsersByName(name: string): Promise<object[]> {
-    return await [
-      { id: "1", email: "test1@email.com" },
-      { id: "2", email: "test2@email.com" },
-    ];
+  public async getUsersByName(name: string): Promise<UserReadDto[]> {
+    return await [];
   }
 
-  public async getUserById(id: string): Promise<object> {
-    return await { id: "1", email: "test1@email.com" };
+  public async getUserById(id: string): Promise<UserReadDto | null> {
+    return await null;
   }
 
-  public async createUser(userCreateDto: object): Promise<object> {
-    return await userCreateDto;
+  public async createUser(userCreateDto: UserCreateDto): Promise<UserReadDto> {
+    return await {};
   }
 
-  public async updateUser(userUpdateDto: object): Promise<object> {
-    return await userUpdateDto;
+  public async updateUser(userUpdateDto: UserUpdateDto): Promise<UserReadDto> {
+    return await {};
   }
 
-  public async loginUser(userLoginRequestDto: object): Promise<object> {
+  public async loginUser(
+    userLoginRequestDto: UserLoginRequestDto
+  ): Promise<AuthorizedResult> {
     return await {};
   }
 
   public async deleteUser(id: string): Promise<void> {}
 
-  public async getAuthResult(payload: object): Promise<object> {
+  public async getAuthResult(
+    payload: CustomJwtPayload
+  ): Promise<AuthorizedResult> {
     return await {};
   }
 }
