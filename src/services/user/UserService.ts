@@ -8,12 +8,14 @@ import {
 } from "../../typings/model/user/dto";
 import { CustomJwtPayload } from "../../typings/common/jwt";
 import { IUserRepository } from "../../db/repositories/user/IUserRepository";
+import { ITokenService } from "../token/ITokenService";
 import { User } from "../../db/models/user/user.model";
 
 export class UserService implements IUserService {
-  constructor(private readonly _userRepository: IUserRepository) {
-    // DI of token service
-  }
+  constructor(
+    private readonly _userRepository: IUserRepository,
+    private readonly _tokenService: ITokenService
+  ) {}
 
   public async getAllUsers(): Promise<UserReadDto[]> {
     const userReadDtos = await this._userRepository.getAll();
