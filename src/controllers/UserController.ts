@@ -56,6 +56,8 @@ export class UserController extends BaseController {
       const userCreateDto = req.body;
       if (!userCreateDto) return super.forbidden(res);
       const userReadDto = await this._userService.createUser(userCreateDto);
+      if (!userReadDto)
+        return super.internalServerError(res, "Something went wrong");
       return super.created(res, userReadDto);
     } catch (err: any) {
       return super.internalServerError(res, err);
