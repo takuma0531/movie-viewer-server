@@ -14,4 +14,13 @@ export class UserRepository
       throw err;
     }
   }
+
+  public async getByEmail(email: string): Promise<UserDocument | null> {
+    try {
+      const user = await this._model.findOne({ email });
+      return user;
+    } catch (err: any) {
+      throw err;
+    }
+  }
 }
