@@ -46,6 +46,7 @@ export class UserService implements IUserService {
     const payload = {
       id: userDocument._id,
       email: userDocument.email,
+      role: userDocument.role,
     };
     const userReadDto = userDocument.toReadDto();
 
@@ -89,6 +90,7 @@ export class UserService implements IUserService {
     const payload = {
       id: userDocument._id,
       email: userDocument.email,
+      role: userDocument.role
     };
     const token = this._tokenService.generateJwt(payload);
 

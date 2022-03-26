@@ -11,6 +11,7 @@ interface ReservedClaims {
 interface UserClaims extends ReservedClaims {
   id?: string;
   email?: string;
+  role?: number;
 }
 
 export { UserClaims };
