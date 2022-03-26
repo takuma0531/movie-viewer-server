@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import { IUserService } from "../services/user/IUserService";
 import { BaseController } from "./BaseController";
 
-// TODO: subject to change
 export class UserController extends BaseController {
   constructor(private readonly _userService: IUserService) {
     super();
@@ -86,10 +85,8 @@ export class UserController extends BaseController {
       const credential = req.body;
       if (!credential) return super.unauthorized(res);
       const authorizedResult = await this._userService.loginUser(credential);
-      return super.ok(res, authorizedResult);
-
-      // if (authorizedResult.isAuthorized) super.ok(res, authorizedResult);
-      // else return super.unauthorized(res);
+      if (authorizedResult.isAuthorized) return super.ok(res, authorizedResult);
+      else return super.unauthorized(res);
     } catch (err: any) {
       return super.internalServerError(res, err);
     }
@@ -100,6 +97,8 @@ export class UserController extends BaseController {
   // @access    private
   public async deleteUser(req: Request, res: Response) {
     try {
+      const { id } = req.userClaims;
+      await this._userService.deleteUser(id!);
       return super.ok(res);
     } catch (err: any) {
       return super.internalServerError(res, err);
@@ -111,9 +110,13 @@ export class UserController extends BaseController {
   // @access    private
   public async returnAuthorizedResult(req: Request, res: Response) {
     try {
-      //   const authorizedResult = this._userService.getAuthResult({});
-      //   return super.ok(res, authorizedResult);
-      return super.ok(res);
+      const { id, email, role } = req.userClaims;
+      const authorizedResult = this._userService.getAuthResult({
+        id: id!,
+        email: email!,
+        role: role!,
+      });
+      return super.ok(res, authorizedResult);
     } catch (err: any) {
       return super.internalServerError(res, err);
     }
