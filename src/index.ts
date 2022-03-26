@@ -13,6 +13,9 @@ import {
   ratingRouter,
   userRouter,
 } from "./routes";
+import { connectDB } from "./db/mongoose";
+
+connectDB();
 
 const serverComponents: ServerComponents = {
   host: ServerConstants.SERVER_HOST,
