@@ -8,6 +8,7 @@ import {
 } from "../../typings/model/user/dto";
 import { CustomJwtPayload } from "../../typings/common/jwt";
 import { IUserRepository } from "../../db/repositories/user/IUserRepository";
+import { User } from "../../db/models/user/user.model";
 
 export class UserService implements IUserService {
   constructor(private readonly _userRepository: IUserRepository) {
@@ -33,9 +34,9 @@ export class UserService implements IUserService {
     userCreateDto: UserCreateDto
   ): Promise<UserReadDto | null> {
     // TODO:
-    // const userReadDto = await this._userRepository.add();
-    // return userReadDto;
-    return null;
+    const userDocument = User.toDocument(userCreateDto);
+    const userReadDto = await this._userRepository.add(userDocument);
+    return userReadDto;
   }
 
   public async updateUser(
