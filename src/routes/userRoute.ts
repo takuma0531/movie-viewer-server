@@ -23,7 +23,7 @@ router.get(
 );
 
 router.get(
-  "/user/:id",
+  "/user",
   (req: Request, res: Response, next: NextFunction) =>
     authorization.verifyToken(req, res, next),
   (req: Request, res: Response) => userController.getUserById(req, res)

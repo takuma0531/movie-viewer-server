@@ -49,7 +49,7 @@ export class Repository<TDocument extends Document>
   public async updateById(id: string, data: any): Promise<TDocument | null> {
     try {
       const document = await this._model.findByIdAndUpdate(id, data);
-      return document;
+      return await this.getById(document?._id);
     } catch (err) {
       throw err;
     }

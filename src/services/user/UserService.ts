@@ -46,6 +46,15 @@ export class UserService implements IUserService {
     }
   }
 
+  public async getUserByEmail(email: string): Promise<UserReadDto | null> {
+    try {
+      const userReadDto = await this._userRepository.getByEmail(email);
+      return userReadDto;
+    } catch (err: any) {
+      throw err;
+    }
+  }
+
   public async createUser(
     userCreateDto: UserCreateDto
   ): Promise<UserReadDto | null> {

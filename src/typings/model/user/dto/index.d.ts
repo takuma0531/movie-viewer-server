@@ -27,7 +27,6 @@ export interface UserUpdateDto extends BaseUpdateDto {
   name?: User["name"];
   country?: User["country"];
   continent?: User["continent"];
-  role: User["role"];
   age?: User["age"];
 }
 

@@ -11,6 +11,7 @@ export interface IUserService {
   getAllUsers(): Promise<UserReadDto[]>;
   getUsersByName(name: string): Promise<UserReadDto[] | null>;
   getUserById(id: string): Promise<UserReadDto | null>;
+  getUserByEmail(email: string): Promise<UserReadDto | null>;
   createUser(userCreateDto: UserCreateDto): Promise<UserReadDto | null>;
   updateUser(userUpdateDto: UserUpdateDto): Promise<UserReadDto | null>;
   loginUser(

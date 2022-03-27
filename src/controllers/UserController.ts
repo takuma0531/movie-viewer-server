@@ -34,13 +34,13 @@ export class UserController extends BaseController {
     }
   }
 
-  // @route     GET api/v1/users/:id
+  // @route     GET api/v1/users/user
   // @desc      get a user by id
   // @access    private
   public async getUserById(req: Request, res: Response) {
     try {
-      const { id } = req.params;
-      const userReadDto = await this._userService.getUserById(id);
+      const { id } = req.userClaims;
+      const userReadDto = await this._userService.getUserById(id!);
       return super.ok(res, userReadDto);
     } catch (err: any) {
       return super.internalServerError(res, err);
@@ -52,9 +52,15 @@ export class UserController extends BaseController {
   // @access    public
   public async createUser(req: Request, res: Response) {
     try {
-      // TODO: same user handling
       const userCreateDto = req.body;
       if (!userCreateDto) return super.forbidden(res);
+      const existingUserReadDto = await this._userService.getUserByEmail(
+        userCreateDto.email
+      );
+      if (existingUserReadDto != null)
+        return super.ok(res, {
+          message: "The email has already been registered",
+        });
       const userReadDto = await this._userService.createUser(userCreateDto);
       if (!userReadDto)
         return super.internalServerError(res, "Something went wrong");
@@ -112,7 +118,7 @@ export class UserController extends BaseController {
   public async returnAuthorizedResult(req: Request, res: Response) {
     try {
       const { id, email, role } = req.userClaims;
-      const authorizedResult = this._userService.getAuthResult({
+      const authorizedResult = await this._userService.getAuthResult({
         id: id!,
         email: email!,
         role: role!,
