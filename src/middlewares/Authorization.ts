@@ -10,7 +10,6 @@ class Authorization {
 
   public verifyToken(req: Request, res: Response, next: NextFunction) {
     try {
-      console.log("hello");
       let token = req.get("authorization");
       if (!token) return this.unauthorized(res);
 

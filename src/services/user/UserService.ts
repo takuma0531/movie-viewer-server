@@ -20,99 +20,131 @@ export class UserService implements IUserService {
   ) {}
 
   public async getAllUsers(): Promise<UserReadDto[]> {
-    const userReadDtos = await this._userRepository.getAll();
-    return userReadDtos;
+    try {
+      const userReadDtos = await this._userRepository.getAll();
+      return userReadDtos;
+    } catch (err: any) {
+      throw err;
+    }
   }
 
   public async getUsersByName(name: string): Promise<UserReadDto[] | null> {
-    const userReadDtos = await this._userRepository.getSomeByName(name);
-    return userReadDtos;
+    try {
+      const userReadDtos = await this._userRepository.getSomeByName(name);
+      return userReadDtos;
+    } catch (err: any) {
+      throw err;
+    }
   }
 
   public async getUserById(id: string): Promise<UserReadDto | null> {
-    const userReadDto = await this._userRepository.getById(id);
-    return userReadDto;
+    try {
+      const userReadDto = await this._userRepository.getById(id);
+      return userReadDto;
+    } catch (err: any) {
+      throw err;
+    }
   }
 
   public async createUser(
     userCreateDto: UserCreateDto
   ): Promise<UserReadDto | null> {
-    userCreateDto.password = await BcryptService.encrypt(
-      userCreateDto.password
-    );
-    const userDocumentToAdd = User.toDocument(userCreateDto);
-    const userDocument = await this._userRepository.add(userDocumentToAdd);
+    try {
+      userCreateDto.password = await BcryptService.encrypt(
+        userCreateDto.password
+      );
+      const userDocumentToAdd = User.toDocument(userCreateDto);
+      const userDocument = await this._userRepository.add(userDocumentToAdd);
 
-    const payload = {
-      id: userDocument._id,
-      email: userDocument.email,
-      role: userDocument.role,
-    };
-    const userReadDto = userDocument.toReadDto();
+      const payload = {
+        id: userDocument._id,
+        email: userDocument.email,
+        role: userDocument.role,
+      };
+      const userReadDto = userDocument.toReadDto();
 
-    const token = this._tokenService.generateJwt(payload);
-    const auth: AuthorizedResult = {
-      token,
-      expireIn: JwtConstants.JWT_EXPIRE_IN,
-      isAuthorized: true,
-    };
-    userReadDto.authResult = auth;
+      const token = this._tokenService.generateJwt(payload);
+      const auth: AuthorizedResult = {
+        token,
+        expireIn: JwtConstants.JWT_EXPIRE_IN,
+        isAuthorized: true,
+      };
+      userReadDto.authResult = auth;
 
-    return userReadDto;
+      return userReadDto;
+    } catch (err: any) {
+      throw err;
+    }
   }
 
   public async updateUser(
     userUpdateDto: UserUpdateDto
   ): Promise<UserReadDto | null> {
-    const userDocument = await this._userRepository.updateById(
-      userUpdateDto.id!,
-      userUpdateDto
-    );
-    return userDocument;
+    try {
+      const userDocument = await this._userRepository.updateById(
+        userUpdateDto.id!,
+        userUpdateDto
+      );
+      return userDocument;
+    } catch (err: any) {
+      throw err;
+    }
   }
 
   public async loginUser(
     userLoginRequestDto: UserLoginRequestDto
   ): Promise<AuthorizedResult> {
-    const authorizedResult = this.returnInitialAuthorizedResult();
+    try {
+      const authorizedResult = this.returnInitialAuthorizedResult();
 
-    const userDocument = await this._userRepository.getByEmail(
-      userLoginRequestDto.email
-    );
-    if (!userDocument) return authorizedResult;
+      const userDocument = await this._userRepository.getByEmail(
+        userLoginRequestDto.email
+      );
+      if (!userDocument) return authorizedResult;
 
-    const isPaswordMatched = await BcryptService.compare(
-      userLoginRequestDto.password,
-      userDocument.password
-    );
-    if (!isPaswordMatched) return authorizedResult;
+      const isPaswordMatched = await BcryptService.compare(
+        userLoginRequestDto.password,
+        userDocument.password
+      );
+      if (!isPaswordMatched) return authorizedResult;
 
-    const payload = {
-      id: userDocument._id,
-      email: userDocument.email,
-      role: userDocument.role
-    };
-    const token = this._tokenService.generateJwt(payload);
+      const payload = {
+        id: userDocument._id,
+        email: userDocument.email,
+        role: userDocument.role,
+      };
+      const token = this._tokenService.generateJwt(payload);
 
-    authorizedResult.token = token;
-    authorizedResult.expireIn = JwtConstants.JWT_EXPIRE_IN;
-    authorizedResult.isAuthorized = true;
-    return authorizedResult;
+      authorizedResult.token = token;
+      authorizedResult.expireIn = JwtConstants.JWT_EXPIRE_IN;
+      authorizedResult.isAuthorized = true;
+      return authorizedResult;
+    } catch (err: any) {
+      throw err;
+    }
   }
 
   public async deleteUser(id: string): Promise<void> {
-    await this._userRepository.removeById(id);
+    try {
+      await this._userRepository.removeById(id);
+    } catch (err: any) {
+      throw err;
+    }
   }
 
   public async getAuthResult(
     payload: CustomJwtPayload
   ): Promise<AuthorizedResult> {
-    const authorizedResult = this.returnInitialAuthorizedResult();
-    const token = this._tokenService.generateJwt(payload);
-    authorizedResult.token = token;
-    authorizedResult.expireIn = JwtConstants.JWT_EXPIRE_IN;
-    authorizedResult.isAuthorized = true;
-    return authorizedResult;
+    try {
+      const authorizedResult = this.returnInitialAuthorizedResult();
+      const token = this._tokenService.generateJwt(payload);
+      authorizedResult.token = token;
+      authorizedResult.expireIn = JwtConstants.JWT_EXPIRE_IN;
+      authorizedResult.isAuthorized = true;
+      return authorizedResult;
+    } catch (err: any) {
+      throw err;
+    }
   }
 
   private returnInitialAuthorizedResult(): AuthorizedResult {

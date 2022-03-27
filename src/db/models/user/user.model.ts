@@ -1,5 +1,6 @@
 import { Schema, model } from "mongoose";
 import { UserDocument, UserModel } from "../../../typings/model/user";
+import { userPlugin } from "./user.plugin";
 
 const userSchema = new Schema<UserDocument>(
   {
@@ -35,5 +36,7 @@ const userSchema = new Schema<UserDocument>(
   },
   { timestamps: true }
 );
+
+userPlugin(userSchema);
 
 export const User = model<UserDocument, UserModel>("User", userSchema);

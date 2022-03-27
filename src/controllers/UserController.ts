@@ -52,6 +52,7 @@ export class UserController extends BaseController {
   // @access    public
   public async createUser(req: Request, res: Response) {
     try {
+      // TODO: same user handling
       const userCreateDto = req.body;
       if (!userCreateDto) return super.forbidden(res);
       const userReadDto = await this._userService.createUser(userCreateDto);
