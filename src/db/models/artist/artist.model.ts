@@ -21,4 +21,4 @@ const artistSchema = new Schema<ArtistDocument>(
 
 artistPlugin(artistSchema);
 
-export const Artist = model<ArtistDocument, ArtistModel>("Model", artistSchema);
+export const Artist = model<ArtistDocument, ArtistModel>("Artist", artistSchema);

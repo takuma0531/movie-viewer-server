@@ -37,6 +37,8 @@
 
 ### Genre Route (admin only)
 - get all genres
+- get by name
+- get by id
 - register a genre
 - update a genre
 - delete a genre
