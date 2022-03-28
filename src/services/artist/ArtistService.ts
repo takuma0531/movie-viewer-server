@@ -6,13 +6,18 @@ import {
 } from "../../typings/model/artist/dto";
 import { IArtistRepository } from "../../db/repositories/artist/IArtistRepository";
 import { Artist } from "../../db/models/artist/artist.model";
+import { ArtistDocument } from "../../typings/model/artist";
 
 export class ArtistService implements IArtistService {
   constructor(private readonly _artistRepository: IArtistRepository) {}
 
   public async getAllArtists(): Promise<ArtistReadDto[]> {
     try {
-      const artistReadDtos = await this._artistRepository.getAll();
+      const artistDocuments = await this._artistRepository.getAll();
+      if (!artistDocuments) return artistDocuments;
+      const artistReadDtos = artistDocuments.map(
+        (userDocument: ArtistDocument) => userDocument.toReadDto()
+      );
       return artistReadDtos;
     } catch (err: any) {
       throw err;
@@ -21,7 +26,11 @@ export class ArtistService implements IArtistService {
 
   public async getArtistsByName(name: string): Promise<ArtistReadDto[] | null> {
     try {
-      const artistReadDtos = await this._artistRepository.getSomeByName(name);
+      const artistDocuments = await this._artistRepository.getSomeByName(name);
+      if (!artistDocuments) return artistDocuments;
+      const artistReadDtos = artistDocuments.map(
+        (userDocument: ArtistDocument) => userDocument.toReadDto()
+      );
       return artistReadDtos;
     } catch (err: any) {
       throw err;

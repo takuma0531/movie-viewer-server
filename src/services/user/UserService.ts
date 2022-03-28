@@ -12,7 +12,7 @@ import { ITokenService } from "../token/ITokenService";
 import { BcryptService } from "../crypto/BcryptService";
 import { User } from "../../db/models/user/user.model";
 import { JwtConstants } from "../../config/constants";
-import { UserDocument } from "src/typings/model/user";
+import { UserDocument } from "../../typings/model/user";
 
 export class UserService implements IUserService {
   constructor(
