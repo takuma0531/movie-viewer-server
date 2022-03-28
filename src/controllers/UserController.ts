@@ -19,7 +19,7 @@ export class UserController extends BaseController {
     }
   }
 
-  // @route     GET api/v1/users/search?name=""
+  // @route     GET api/v1/users/search?name=
   // @desc      get users by name
   // @access    private & admin only
   public async getUsersByName(req: Request, res: Response) {

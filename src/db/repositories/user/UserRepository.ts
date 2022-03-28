@@ -8,7 +8,9 @@ export class UserRepository
 {
   public async getSomeByName(name: string): Promise<UserDocument[] | null> {
     try {
-      const users = await this._model.find({ name });
+      const users = await this._model.find({
+        name: { $regex: "^" + name, $options: "i" },
+      });
       return users;
     } catch (err: any) {
       throw err;

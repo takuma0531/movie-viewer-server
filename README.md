@@ -21,12 +21,13 @@
 - update a movie (admin only)
 - delete a movie (admin only)
 
-### Artist Route (admin only)
+### Artist Route
 - get all artists
 - get some artists by name
-- register an artist
-- update an artist
-- delete an artist
+- get some artists by movie
+- register an artist (admin only)
+- update an artist (admin only)
+- delete an artist (admin only)
 
 ### Director Route (admin only)
 - get all directors

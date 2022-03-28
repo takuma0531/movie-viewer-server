@@ -12,6 +12,7 @@ import { ITokenService } from "../token/ITokenService";
 import { BcryptService } from "../crypto/BcryptService";
 import { User } from "../../db/models/user/user.model";
 import { JwtConstants } from "../../config/constants";
+import { UserDocument } from "src/typings/model/user";
 
 export class UserService implements IUserService {
   constructor(
@@ -21,7 +22,11 @@ export class UserService implements IUserService {
 
   public async getAllUsers(): Promise<UserReadDto[]> {
     try {
-      const userReadDtos = await this._userRepository.getAll();
+      const userDocuments = await this._userRepository.getAll();
+      if (!userDocuments) return userDocuments;
+      const userReadDtos = userDocuments.map((userDocument: UserDocument) =>
+        userDocument.toReadDto()
+      );
       return userReadDtos;
     } catch (err: any) {
       throw err;
@@ -30,7 +35,11 @@ export class UserService implements IUserService {
 
   public async getUsersByName(name: string): Promise<UserReadDto[] | null> {
     try {
-      const userReadDtos = await this._userRepository.getSomeByName(name);
+      const userDocuments = await this._userRepository.getSomeByName(name);
+      if (!userDocuments) return userDocuments;
+      const userReadDtos = userDocuments.map((userDocument: UserDocument) =>
+        userDocument.toReadDto()
+      );
       return userReadDtos;
     } catch (err: any) {
       throw err;
@@ -39,8 +48,8 @@ export class UserService implements IUserService {
 
   public async getUserById(id: string): Promise<UserReadDto | null> {
     try {
-      const userReadDto = await this._userRepository.getById(id);
-      return userReadDto;
+      const userReadDocument = await this._userRepository.getById(id);
+      return userReadDocument!.toReadDto();
     } catch (err: any) {
       throw err;
     }
@@ -48,8 +57,8 @@ export class UserService implements IUserService {
 
   public async getUserByEmail(email: string): Promise<UserReadDto | null> {
     try {
-      const userReadDto = await this._userRepository.getByEmail(email);
-      return userReadDto;
+      const userDocument = await this._userRepository.getByEmail(email);
+      return userDocument!.toReadDto();
     } catch (err: any) {
       throw err;
     }
@@ -94,7 +103,7 @@ export class UserService implements IUserService {
         userUpdateDto.id!,
         userUpdateDto
       );
-      return userDocument;
+      return userDocument!.toReadDto();
     } catch (err: any) {
       throw err;
     }
