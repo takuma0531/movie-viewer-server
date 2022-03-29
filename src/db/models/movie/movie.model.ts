@@ -19,7 +19,7 @@ const movieSchema = new Schema<MovieDocument>(
       required: true,
     },
     thumbnail: {
-      type: Buffer,
+      type: String,
     },
     director: {
       type: String,

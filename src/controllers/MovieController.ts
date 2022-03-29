@@ -3,6 +3,7 @@ import { MovieReadDto } from "../typings/model/movie/dto";
 import { IMovieService } from "../services/movie/IMovieService";
 import { BaseController } from "./BaseController";
 import { ResponseMessageHandler } from "../utils/ResponseMessageHandler";
+import { unlinkAsync } from "../utils/FileDeletionHandler";
 
 export class MovieController extends BaseController {
   constructor(private readonly _movieService: IMovieService) {
@@ -61,11 +62,13 @@ export class MovieController extends BaseController {
       const existingMovieReadDto = await this._movieService.getMovieByTitle(
         movieCreateDto.title
       );
-      if (existingMovieReadDto != null)
+      if (existingMovieReadDto != null) {
+        if (req.file?.path) await unlinkAsync(req.file.path);
         return super.ok(res, {
           message: ResponseMessageHandler.returnResMsg("The movie"),
         });
-      // TODO: add image file to thumbnail
+      }
+      movieCreateDto.thumbnail = req.file?.filename;
       const movieReadDto = await this._movieService.createMovie(movieCreateDto);
       return super.created(res, movieReadDto);
     } catch (err: any) {
@@ -79,7 +82,7 @@ export class MovieController extends BaseController {
   public async updateMovie(req: Request, res: Response) {
     try {
       const movieUpdateDto = req.body;
-      // TODO: add image file to thumbnail
+      movieUpdateDto.thumbnail = req.file?.path;
       const movieReadDto = await this._movieService.updateMovie(movieUpdateDto);
       return super.ok(res, movieReadDto);
     } catch (err: any) {
