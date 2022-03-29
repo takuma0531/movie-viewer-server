@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { IArtistService } from "../services/artist/IArtistService";
 import { BaseController } from "./BaseController";
+import { ResponseMessageHandler } from "../utils/ResponseMessageHandler";
 
 export class ArtistController extends BaseController {
   constructor(private readonly _artistService: IArtistService) {
@@ -46,7 +47,7 @@ export class ArtistController extends BaseController {
       );
       if (existingArtistReadDtos != null)
         return super.ok(res, {
-          message: "The artist has already been registered",
+          message: ResponseMessageHandler.returnResMsg("The artist"),
         });
       const artistReadDto = await this._artistService.createArtist(
         artistCreateDto

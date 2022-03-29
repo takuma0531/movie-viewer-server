@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { IGenreService } from "../services/genre/IGenreService";
 import { BaseController } from "./BaseController";
+import { ResponseMessageHandler } from "../utils/ResponseMessageHandler";
 
 export class GenreController extends BaseController {
   constructor(private readonly _genreService: IGenreService) {
@@ -59,7 +60,7 @@ export class GenreController extends BaseController {
       );
       if (existingGenreReadDto)
         return super.ok(res, {
-          message: "The genre has already been registered",
+          message: ResponseMessageHandler.returnResMsg("The genre"),
         });
       const genreReadDto = await this._genreService.createGenre(genreCreateDto);
       if (!genreReadDto)

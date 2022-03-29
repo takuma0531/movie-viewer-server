@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { IUserService } from "../services/user/IUserService";
 import { BaseController } from "./BaseController";
+import { ResponseMessageHandler } from "../utils/ResponseMessageHandler";
 
 export class UserController extends BaseController {
   constructor(private readonly _userService: IUserService) {
@@ -59,7 +60,7 @@ export class UserController extends BaseController {
       );
       if (existingUserReadDto != null)
         return super.ok(res, {
-          message: "The email has already been registered",
+          message: ResponseMessageHandler.returnResMsg("The email"),
         });
       const userReadDto = await this._userService.createUser(userCreateDto);
       if (!userReadDto)
