@@ -20,7 +20,7 @@ connectDB();
 const serverComponents: ServerComponents = {
   host: ServerConstants.SERVER_HOST,
   port: ServerConstants.SERVER_PORT,
-  middlewares: [express.json(), cors()],
+  middlewares: [express.json(), cors(), express.urlencoded()],
   routes: [
     {
       baseRoute: "/api/v1",
