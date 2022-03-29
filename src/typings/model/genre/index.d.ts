@@ -1,11 +1,11 @@
 import { Model, Document } from "mongoose";
 import { IHasCustomMethod, IHasCustomStaticMethod } from "../base";
 import { GenreReadDto, GenreCreateDto, GenreUpdateDto } from "./dto";
-// // movieDocument TODO:
+import { MovieDocument } from "../movie";
 
 export interface Genre {
   name: string;
-  movies: any[];
+  movies: string[] | MovieDocument[];
 }
 
 export interface GenreDocument extends Genre, Document, IHasCustomGenreMethod {}

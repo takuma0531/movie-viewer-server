@@ -14,9 +14,7 @@
 
 ### Movie Route
 - register a movie (admin only)
-- get some movies by keyword
-- get some movies by artists
-- get some movies by director
+- get some movies by title
 - get some recent movies
 - update a movie (admin only)
 - delete a movie (admin only)

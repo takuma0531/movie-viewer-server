@@ -15,10 +15,7 @@ export class ArtistService implements IArtistService {
     try {
       const artistDocuments = await this._artistRepository.getAll();
       if (!artistDocuments) return artistDocuments;
-      const artistReadDtos = artistDocuments.map(
-        (userDocument: ArtistDocument) => userDocument.toReadDto()
-      );
-      return artistReadDtos;
+      return this.convertDocumentsToReadDtos(artistDocuments);
     } catch (err: any) {
       throw err;
     }
@@ -28,10 +25,7 @@ export class ArtistService implements IArtistService {
     try {
       const artistDocuments = await this._artistRepository.getSomeByName(name);
       if (!artistDocuments) return artistDocuments;
-      const artistReadDtos = artistDocuments.map(
-        (userDocument: ArtistDocument) => userDocument.toReadDto()
-      );
-      return artistReadDtos;
+      return this.convertDocumentsToReadDtos(artistDocuments);
     } catch (err: any) {
       throw err;
     }
@@ -72,5 +66,12 @@ export class ArtistService implements IArtistService {
     } catch (err: any) {
       throw err;
     }
+  }
+
+  private convertDocumentsToReadDtos(artistDocuments: ArtistDocument[]) {
+    const artistReadDtos = artistDocuments.map((userDocument: ArtistDocument) =>
+      userDocument.toReadDto()
+    );
+    return artistReadDtos;
   }
 }

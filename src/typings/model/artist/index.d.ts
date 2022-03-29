@@ -1,11 +1,11 @@
 import { Model, Document } from "mongoose";
 import { IHasCustomMethod, IHasCustomStaticMethod } from "../base";
 import { ArtistReadDto, ArtistCreateDto, ArtistUpdateDto } from "./dto";
-// movieDocument TODO:
+import { MovieDocument } from "../movie";
 
 export interface Artist {
   name: string;
-  movies: any[];
+  movies: string[] | MovieDocument[];
 }
 
 export interface ArtistDocument
