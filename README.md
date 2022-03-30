@@ -13,6 +13,7 @@ TODO: add get by id to all the services;
 
 ### Movie Route
 - register a movie (admin only)
+- get by id
 - get some movies by title
 - get some recent movies
 - update a movie (admin only)
@@ -20,6 +21,7 @@ TODO: add get by id to all the services;
 
 ### Artist Route
 - get all artists
+- get by id
 - get some artists by name
 - get some artists by movie
 - register an artist (admin only)
@@ -27,7 +29,8 @@ TODO: add get by id to all the services;
 - delete an artist (admin only)
 
 ### Director Route
-- get all directors 
+- get all directors
+- get by id
 - get some directors by name
 - register a director (admin only)
 - update a director (admin only)
@@ -43,11 +46,13 @@ TODO: add get by id to all the services;
 
 ### Comment Route
 - get all comments (admin only)
+- get by id
 - get comments related to a movie
 - add a comment with a rating (rating should have a comment id as a foreign key)
 - delete a comment (admin only)
 
 ### Rating Route
+- get by id
 - get a list of sorted-by-ages-ratings for analysis based on age
 - get a list of sorted-by-continent-ratings for analysis based on continent
 ```

@@ -9,6 +9,10 @@ router.get("/", (req: Request, res: Response) =>
   movieController.getAllMoivies(req, res)
 );
 
+router.get("/movie/:id", (req: Request, res: Response) =>
+  movieController.getMovieById(req, res)
+);
+
 router.get("/search", (req: Request, res: Response) =>
   movieController.getMoviesByTitle(req, res)
 );

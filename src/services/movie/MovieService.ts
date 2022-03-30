@@ -21,6 +21,16 @@ export class MovieService implements IMovieService {
     }
   }
 
+  public async getMovieById(id: string): Promise<MovieReadDto | null> {
+    try {
+      const movieDocument = await this._movieRepository.getById(id);
+      if (!movieDocument) return movieDocument;
+      return movieDocument.toReadDto();
+    } catch (err: any) {
+      throw err;
+    }
+  }
+
   public async getMoviesByTitle(title: string): Promise<MovieReadDto[] | null> {
     try {
       const movieDocuments = await this._movieRepository.getSomeByTitle(title);

@@ -7,6 +7,7 @@ import {
 
 export interface IMovieService {
   getAllMovies(): Promise<MovieReadDto[]>;
+  getMovieById(id: string): Promise<MovieReadDto | null>;
   getMoviesByTitle(title: string): Promise<MovieReadDto[] | null>;
   getMovieByTitle(title: string): Promise<MovieCreateDto | null>;
   getLastestMovies(limit: number): Promise<MovieReadDto[] | null>;

@@ -22,6 +22,20 @@ export class MovieController extends BaseController {
     }
   }
 
+  // @route     GET api/v1/movies/movie/:id
+  // @desc      get a movie by id
+  // @access    public
+  public async getMovieById(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      const movieReadDto = await this._movieService.getMovieById(id);
+      if (!movieReadDto) return super.notFound(res);
+      return super.ok(res, movieReadDto);
+    } catch (err: any) {
+      return super.internalServerError(res, err);
+    }
+  }
+
   // @route     GET api/v1/movies/search?title=
   // @desc      get movies by title
   // @access    public

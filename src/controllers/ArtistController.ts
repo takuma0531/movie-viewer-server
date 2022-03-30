@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { IArtistService } from "../services/artist/IArtistService";
 import { BaseController } from "./BaseController";
-import { ResponseMessageHandler } from "../utils/ResponseMessageHandler";
 
 export class ArtistController extends BaseController {
   constructor(private readonly _artistService: IArtistService) {
@@ -15,6 +14,20 @@ export class ArtistController extends BaseController {
     try {
       const artistReadDtos = await this._artistService.getAllArtists();
       return super.ok(res, artistReadDtos);
+    } catch (err: any) {
+      return super.internalServerError(res, err);
+    }
+  }
+
+  // @route     GET api/v1/artists/artist/:id
+  // @desc      get an artist by id
+  // @access    public
+  public async getArtistById(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      const artistReadDto = await this._artistService.getArtistById(id);
+      if (!artistReadDto) return super.notFound(res);
+      return super.ok(res, artistReadDto);
     } catch (err: any) {
       return super.internalServerError(res, err);
     }
@@ -42,13 +55,6 @@ export class ArtistController extends BaseController {
     try {
       const artistCreateDto = req.body;
       if (!artistCreateDto) return super.forbidden(res);
-      const existingArtistReadDtos = await this._artistService.getArtistsByName(
-        artistCreateDto.name
-      );
-      if (existingArtistReadDtos != null)
-        return super.ok(res, {
-          message: ResponseMessageHandler.returnResMsg("The artist"),
-        });
       const artistReadDto = await this._artistService.createArtist(
         artistCreateDto
       );

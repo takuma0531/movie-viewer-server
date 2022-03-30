@@ -8,6 +8,10 @@ router.get("/", (req: Request, res: Response) =>
   artistController.getAllArtists(req, res)
 );
 
+router.get("/artist/:id", (req: Request, res: Response) =>
+  artistController.getArtistById(req, res)
+);
+
 router.get("/search", (req: Request, res: Response) =>
   artistController.getByName(req, res)
 );

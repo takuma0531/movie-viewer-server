@@ -21,6 +21,16 @@ export class ArtistService implements IArtistService {
     }
   }
 
+  public async getArtistById(id: string): Promise<ArtistReadDto | null> {
+    try {
+      const artistDocument = await this._artistRepository.getById(id);
+      if (!artistDocument) return artistDocument;
+      return artistDocument.toReadDto();
+    } catch (err: any) {
+      throw err;
+    }
+  }
+
   public async getArtistsByName(name: string): Promise<ArtistReadDto[] | null> {
     try {
       const artistDocuments = await this._artistRepository.getSomeByName(name);
