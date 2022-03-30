@@ -6,7 +6,6 @@ const artistSchema = new Schema<ArtistDocument>(
   {
     name: {
       type: String,
-      unique: true,
       required: true,
     },
     movies: [

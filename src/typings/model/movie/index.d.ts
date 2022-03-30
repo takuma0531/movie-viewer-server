@@ -3,13 +3,14 @@ import { IHasCustomMethod, IHasCustomStaticMethod } from "../base";
 import { MovieCreateDto, MovieReadDto } from "./dto";
 import { GenreDocument } from "../genre";
 import { ArtistDocument } from "../artist";
+import { DirectorDocument } from "../director";
 
 export interface Movie {
   title: string;
   genre: string | GenreDocument;
   description: string;
   thumbnail: Buffer | string;
-  director: string | any; // director doc TODO:
+  director: string | DirectorDocument;
   artists: string[] | ArtistDocument[];
   comments: string[] | any[]; // comment doc TODO:
   ratings: string[] | any[];

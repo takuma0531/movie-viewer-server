@@ -1,3 +1,5 @@
+TODO: add get by id to all the services;
+
 ### Routes (Provisional)
 ```
 ### User Route
@@ -8,9 +10,6 @@
 - update a user
 - delete a user
 - login a user
-
-### Image Route
-- upload an image
 
 ### Movie Route
 - register a movie (admin only)
@@ -27,19 +26,20 @@
 - update an artist (admin only)
 - delete an artist (admin only)
 
-### Director Route (admin only)
-- get all directors
-- register a director
-- update a director
-- delete a director
+### Director Route
+- get all directors 
+- get some directors by name
+- register a director (admin only)
+- update a director (admin only)
+- delete a director (admin only)
 
-### Genre Route (admin only)
+### Genre Route 
 - get all genres
 - get by name
 - get by id
-- register a genre
-- update a genre
-- delete a genre
+- register a genre (admin only)
+- update a genre (admin only)
+- delete a genre (admin only)
 
 ### Comment Route
 - get all comments (admin only)

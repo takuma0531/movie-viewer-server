@@ -22,7 +22,8 @@ const movieSchema = new Schema<MovieDocument>(
       type: String,
     },
     director: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: "Director",
     },
     artists: [
       {
