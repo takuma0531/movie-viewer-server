@@ -5,6 +5,7 @@ import { DirectorCreateDto, DirectorReadDto, DirectorUpdateDto } from "./dto";
 
 export interface Director {
   name: string;
+  description: string;
   movies: string[] | MovieDocument[];
 }
 

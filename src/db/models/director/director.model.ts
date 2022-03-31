@@ -11,6 +11,10 @@ const directorSchema = new Schema<DirectorDocument>(
       type: String,
       required: true,
     },
+    description: {
+      type: String,
+      required: true,
+    },
     movies: [
       {
         type: Schema.Types.ObjectId,

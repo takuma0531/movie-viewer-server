@@ -8,6 +8,10 @@ const artistSchema = new Schema<ArtistDocument>(
       type: String,
       required: true,
     },
+    description: {
+      type: String,
+      required: true,
+    },
     movies: [
       {
         type: Schema.Types.ObjectId,
@@ -20,4 +24,7 @@ const artistSchema = new Schema<ArtistDocument>(
 
 artistPlugin(artistSchema);
 
-export const Artist = model<ArtistDocument, ArtistModel>("Artist", artistSchema);
+export const Artist = model<ArtistDocument, ArtistModel>(
+  "Artist",
+  artistSchema
+);
