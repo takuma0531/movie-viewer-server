@@ -16,4 +16,18 @@ export class CommentRepository
       throw err;
     }
   }
+
+  public async getSomeByMovie(
+    movieId: string
+  ): Promise<CommentDocument[] | null> {
+    try {
+      const comments = await this._model
+        .find({ movie: movieId })
+        .populate("user")
+        .populate("rating");
+      return comments;
+    } catch (err: any) {
+      throw err;
+    }
+  }
 }

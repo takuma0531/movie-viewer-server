@@ -51,7 +51,6 @@ TODO: add get by id to all the services;
 - delete a comment (admin only)
 
 ### Rating Route
-- get by id
 - get a list of sorted-by-ages-ratings for analysis based on age
 - get a list of sorted-by-continent-ratings for analysis based on continent
 ```

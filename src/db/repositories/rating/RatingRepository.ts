@@ -19,7 +19,9 @@ export class RatingRepository
     movieId: string
   ): Promise<RatingDocument[] | null> {
     try {
-      const ratings = await this._model.find({ movie: movieId });
+      const ratings = await this._model
+        .find({ movie: movieId })
+        .populate("user");
       return ratings;
     } catch (err: any) {
       throw err;
