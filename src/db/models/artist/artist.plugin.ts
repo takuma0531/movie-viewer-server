@@ -18,6 +18,7 @@ export const artistPlugin = (artistSchema: Schema<ArtistDocument>) => {
       id: this._id,
       name: this.name,
       movies: this.movies,
+      description: this.description,
     };
     return artistReadDto;
   });

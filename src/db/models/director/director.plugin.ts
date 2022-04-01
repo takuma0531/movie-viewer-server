@@ -18,6 +18,7 @@ export const directorPlugin = (directorSchema: Schema<DirectorDocument>) => {
       id: this._id,
       name: this.name,
       movies: this.movies,
+      description: this.description,
     };
     return directorReadDto;
   });
