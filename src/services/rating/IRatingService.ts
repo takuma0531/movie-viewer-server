@@ -6,12 +6,12 @@ import {
 
 export interface IRatingService {
   getRatingsByMovie(movieId: string): Promise<RatingReadDto[] | null>;
-  populateRatingsByUserAtSpecificAgeAndMovie(
+  filterRatingsByUserAtSpecificAgeAndMovie(
     movieId: string,
     minAge: number,
     maxAge: number
   ): Promise<RatingReadDto[] | null>;
-  populateRatingsByUserInSpecificContinentAndMovie(
+  filterRatingsByUserInSpecificContinentAndMovie(
     movieId: string,
     continent: string
   ): Promise<RatingReadDto[] | null>;
