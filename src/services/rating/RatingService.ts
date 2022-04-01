@@ -97,11 +97,11 @@ export class RatingService implements IRatingService {
     ratingUpdateDto: RatingUpdateDto
   ): Promise<RatingReadDto | null> {
     try {
-      const ratingReadDto = await this._ratingRepository.updateById(
+      const ratingDocument = await this._ratingRepository.updateById(
         ratingUpdateDto.id!,
         ratingUpdateDto
       );
-      return ratingReadDto;
+      return ratingDocument!.toReadDto();
     } catch (err: any) {
       throw err;
     }
