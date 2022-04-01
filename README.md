@@ -47,7 +47,7 @@ TODO: add get by id to all the services;
 ### Comment Route
 - get all comments (admin only)
 - get by id
-- add a comment with a rating (rating should have a comment id as a foreign key)
+- add a comment with a rating (rating should have a comment id as a foreign key) -> add it to movie 
 - delete a comment (admin only)
 
 ### Rating Route

@@ -1,5 +1,5 @@
 import { BaseReadDto, BaseCreateDto, BaseUpdateDto } from "../../base/dto";
-import { Comment } from "../";
+import { Comment } from "..";
 
 export interface CommentReadDto extends BaseReadDto {
   text: Comment["text"];
