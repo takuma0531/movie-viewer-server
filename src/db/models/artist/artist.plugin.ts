@@ -4,6 +4,7 @@ import {
   ArtistReadDto,
   ArtistCreateDto,
 } from "../../../typings/model/artist/dto";
+import { Movie } from "../movie/movie.model";
 
 export const artistPlugin = (artistSchema: Schema<ArtistDocument>) => {
   artistSchema.static(
@@ -21,5 +22,17 @@ export const artistPlugin = (artistSchema: Schema<ArtistDocument>) => {
       description: this.description,
     };
     return artistReadDto;
+  });
+
+  artistSchema.post("remove", async function (res, next) {
+    console.log("query middleware invoked in artist plugin");
+    this.movies.forEach(async (movie: any) => {
+      const movieDocument = await Movie.findById(movie).populate("artists");
+      if (!movieDocument) return next();
+      const index = movieDocument.artists.indexOf(this._id);
+      movieDocument.artists.splice(index, 1);
+      await Movie.findByIdAndUpdate(movieDocument.id, movieDocument);
+    });
+    next();
   });
 };

@@ -4,6 +4,7 @@ import {
   CommentReadDto,
   CommentCreateDto,
 } from "../../../typings/model/comment/dto";
+import { Movie } from "../movie/movie.model";
 
 export const commentPlugin = (commentSchema: Schema<CommentDocument>) => {
   commentSchema.static(
@@ -22,5 +23,24 @@ export const commentPlugin = (commentSchema: Schema<CommentDocument>) => {
       rating: this.rating,
     };
     return commentReadDto;
+  });
+
+  commentSchema.pre("save", async function (next) {
+    console.log("document middleware invoked in comment plugin");
+    const movieDocument = await Movie.findById(this._id);
+    if (!movieDocument) throw "Something went wrong";
+    movieDocument.comments.push(this._id);
+    await Movie.findByIdAndUpdate(movieDocument.id, movieDocument);
+    next();
+  });
+
+  commentSchema.post("remove", async function (res, next) {
+    console.log("query middleware invoked in comment plugin");
+    const movieDocument = await Movie.findById(this._id).populate("comments");
+    if (!movieDocument) throw "Something went wrong";
+    const index = movieDocument.comments.indexOf(this._id);
+    movieDocument.comments.splice(index, 1);
+    await Movie.findByIdAndUpdate(movieDocument.id, movieDocument);
+    next();
   });
 };
