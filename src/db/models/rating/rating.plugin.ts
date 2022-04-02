@@ -4,6 +4,8 @@ import {
   RatingReadDto,
   RatingCreateDto,
 } from "../../../typings/model/rating/dto";
+import { Movie } from "../movie/movie.model";
+import { Rating } from "./rating.model";
 
 export const ratingPlugin = (ratingSchema: Schema<RatingDocument>) => {
   ratingSchema.static(
@@ -21,5 +23,18 @@ export const ratingPlugin = (ratingSchema: Schema<RatingDocument>) => {
       user: this.user,
     };
     return ratingReadDto;
+  });
+
+  ratingSchema.post("remove", async function (next) {
+    try {
+      console.log("document middleware invoked in rating plugin");
+      const movieDocument = await Movie.findById(this.movie);
+      const index = movieDocument!.ratings.indexOf(this._id);
+      movieDocument!.ratings.splice(index, 1);
+      await Rating.findByIdAndUpdate(movieDocument!.id, movieDocument!);
+      next();
+    } catch (err: any) {
+      throw err;
+    }
   });
 };

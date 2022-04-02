@@ -26,21 +26,29 @@ export const commentPlugin = (commentSchema: Schema<CommentDocument>) => {
   });
 
   commentSchema.pre("save", async function (next) {
-    console.log("document middleware invoked in comment plugin");
-    const movieDocument = await Movie.findById(this._id);
-    if (!movieDocument) throw "Something went wrong";
-    movieDocument.comments.push(this._id);
-    await Movie.findByIdAndUpdate(movieDocument.id, movieDocument);
-    next();
+    try {
+      console.log("document middleware invoked in comment plugin");
+      const movieDocument = await Movie.findById(this.movie);
+      if (!movieDocument) throw "Something went wrong";
+      movieDocument.comments.push(this._id);
+      await Movie.findByIdAndUpdate(movieDocument.id, movieDocument);
+      next();
+    } catch (err: any) {
+      throw err;
+    }
   });
 
   commentSchema.post("remove", async function (res, next) {
-    console.log("query middleware invoked in comment plugin");
-    const movieDocument = await Movie.findById(this._id).populate("comments");
-    if (!movieDocument) throw "Something went wrong";
-    const index = movieDocument.comments.indexOf(this._id);
-    movieDocument.comments.splice(index, 1);
-    await Movie.findByIdAndUpdate(movieDocument.id, movieDocument);
-    next();
+    try {
+      console.log("query middleware invoked in comment plugin");
+      const movieDocument = await Movie.findById(this.movie);
+      if (!movieDocument) throw "Something went wrong";
+      const index = movieDocument.comments.indexOf(this._id);
+      movieDocument.comments.splice(index, 1);
+      await Movie.findByIdAndUpdate(movieDocument.id, movieDocument);
+      next();
+    } catch (err: any) {
+      throw err;
+    }
   });
 };

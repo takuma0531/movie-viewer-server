@@ -25,14 +25,18 @@ export const artistPlugin = (artistSchema: Schema<ArtistDocument>) => {
   });
 
   artistSchema.post("remove", async function (res, next) {
-    console.log("query middleware invoked in artist plugin");
-    this.movies.forEach(async (movie: any) => {
-      const movieDocument = await Movie.findById(movie).populate("artists");
-      if (!movieDocument) return next();
-      const index = movieDocument.artists.indexOf(this._id);
-      movieDocument.artists.splice(index, 1);
-      await Movie.findByIdAndUpdate(movieDocument.id, movieDocument);
-    });
-    next();
+    try {
+      console.log("query middleware invoked in artist plugin");
+      this.movies.forEach(async (movie: any) => {
+        const movieDocument = await Movie.findById(movie);
+        if (!movieDocument) return next();
+        const index = movieDocument.artists.indexOf(this._id);
+        movieDocument.artists.splice(index, 1);
+        await Movie.findByIdAndUpdate(movieDocument.id, movieDocument);
+      });
+      next();
+    } catch (err: any) {
+      throw err;
+    }
   });
 };
