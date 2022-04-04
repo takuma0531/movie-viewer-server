@@ -10,6 +10,7 @@ export interface User {
   continent: string;
   role: number;
   age: number;
+  gender: number;
 }
 
 export interface UserDocument extends User, Document, IHasCustomUserMethod {}

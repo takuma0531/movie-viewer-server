@@ -33,6 +33,10 @@ const userSchema = new Schema<UserDocument>(
       type: Number,
       required: true,
     },
+    gender: {
+      type: Number,
+      required: true,
+    },
   },
   { timestamps: true }
 );

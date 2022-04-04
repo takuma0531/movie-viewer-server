@@ -19,6 +19,7 @@ export const userPlugin = (userSchema: Schema<UserDocument>) => {
       continent: this.continent,
       role: this.role,
       age: this.age,
+      gender: this.gender,
     };
     return userReadDto;
   });

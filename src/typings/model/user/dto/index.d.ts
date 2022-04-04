@@ -8,6 +8,7 @@ export interface UserReadDto extends BaseReadDto {
   continent: User["continent"];
   role: User["role"];
   age: User["age"];
+  gender: User["gender"];
   authResult?: AuthorizedResult;
 }
 
