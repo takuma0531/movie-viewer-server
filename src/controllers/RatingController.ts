@@ -7,8 +7,7 @@ export class RatingController extends BaseController {
     super();
   }
 
-  // TODO:
-  // @route     GET api/v1/ratings/movie/user-age?movieId=&minAge=&maxAge=
+  // @route     GET api/v1/ratings/movie/user-age?movieId=
   // @desc      get ratings filtered by user at specific age and movie
   // @access    public
   public async getFilteredRatingByUserAtSpecificAgeAndMovie(
@@ -16,14 +15,17 @@ export class RatingController extends BaseController {
     res: Response
   ) {
     try {
-      const { movieId, minAge, maxAge } = req.query;
-      return super.ok(res);
+      const { movieId } = req.query;
+      const ratingReadDtosFilteredByUserAge =
+        await this._ratingService.filterRatingsByUserAtSpecificAgeAndMovie(
+          movieId as string
+        );
+      return super.ok(res, ratingReadDtosFilteredByUserAge);
     } catch (err: any) {
       return super.internalServerError(res, err);
     }
   }
 
-  // TODO:
   // @route     GET api/v1/ratings/movie/user-continent?movieId=
   // @desc      get ratings filtered by user location and movie
   // @access    public
@@ -33,7 +35,11 @@ export class RatingController extends BaseController {
   ) {
     try {
       const { movieId } = req.query;
-      return super.ok(res);
+      const ratingReadDtosFilteredByUserLocation =
+        await this._ratingService.filterRatingsByUserInSpecificContinentAndMovie(
+          movieId as string
+        );
+      return super.ok(res, ratingReadDtosFilteredByUserLocation);
     } catch (err: any) {
       return super.internalServerError(res, err);
     }
@@ -48,11 +54,11 @@ export class RatingController extends BaseController {
   ) {
     try {
       const { movieId } = req.query;
-      const sortedObject =
+      const ratingReadDtosSortedByUserGender =
         await this._ratingService.sortRatingsByUserGenderAndMovie(
           movieId as string
         );
-      return super.ok(res, sortedObject);
+      return super.ok(res, ratingReadDtosSortedByUserGender);
     } catch (err: any) {
       return super.internalServerError(res, err);
     }
