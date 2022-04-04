@@ -8,6 +8,7 @@ import { Rating } from "../../db/models/rating/rating.model";
 import { IRatingRepository } from "../../db/repositories/rating/IRatingRepository";
 import { RatingDocument } from "../../typings/model/rating";
 import { UserDocument } from "../../typings/model/user";
+import { Gender } from "../../enums/Gender";
 
 export class RatingService implements IRatingService {
   constructor(private readonly _ratingRepository: IRatingRepository) {}
@@ -29,6 +30,7 @@ export class RatingService implements IRatingService {
     }
   }
 
+  // TODO: fix later TODO: like gender function
   public async filterRatingsByUserAtSpecificAgeAndMovie(
     movieId: string,
     minAge: number,
@@ -50,6 +52,7 @@ export class RatingService implements IRatingService {
     }
   }
 
+  // fix later TODO: like gender function
   public async filterRatingsByUserInSpecificContinentAndMovie(
     movieId: string,
     continent: string
@@ -65,6 +68,37 @@ export class RatingService implements IRatingService {
         }
       );
       return filteredRatingReadDtos;
+    } catch (err: any) {
+      throw err;
+    }
+  }
+
+  public async sortRatingsByUserGenderAndMovie(movieId: string): Promise<{
+    male: RatingReadDto[];
+    female: RatingReadDto[];
+    unknown: RatingReadDto[];
+  } | null> {
+    try {
+      const ratingReadDtos = await this.getRatingsByMovie(movieId);
+      if (!ratingReadDtos) return null;
+
+      const ratingReadDtosByMale: RatingReadDto[] = [];
+      const ratingReadDtosByFemale: RatingReadDto[] = [];
+      const ratingReadDtosByUnknown: RatingReadDto[] = [];
+
+      ratingReadDtos.forEach((ratingReadDto: RatingReadDto) => {
+        const castedUser = ratingReadDto.user as UserDocument;
+        if (castedUser.gender == Gender.MALE)
+          ratingReadDtosByMale.push(ratingReadDto);
+        else if (castedUser.gender == Gender.FEMALE)
+          ratingReadDtosByFemale.push(ratingReadDto);
+        else ratingReadDtosByUnknown.push(ratingReadDto);
+      });
+      return {
+        male: ratingReadDtosByMale,
+        female: ratingReadDtosByFemale,
+        unknown: ratingReadDtosByUnknown,
+      };
     } catch (err: any) {
       throw err;
     }
