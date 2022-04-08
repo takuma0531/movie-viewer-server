@@ -78,7 +78,6 @@ export const moviePlugin = (movieSchema: Schema<MovieDocument>) => {
         ratingPoints.reduce((prev, curr) => prev + curr) / ratingPoints.length;
       movieDocument!.averageRating = averageRating;
       await Movie.findByIdAndUpdate(movieDocument!.id, movieDocument!);
-
       next();
     } catch (err: any) {
       throw err;

@@ -63,4 +63,17 @@ export class RatingController extends BaseController {
       return super.internalServerError(res, err);
     }
   }
+
+  // @route   POST api/v1/ratings
+  // @desc    create a rating
+  // @access  private
+  public async createRating(req: Request, res: Response) {
+    try {
+      const rating = req.body;
+      const ratingReadDto = await this._ratingService.createRating(rating);
+      return super.ok(res, ratingReadDto);
+    } catch (err: any) {
+      return super.internalServerError(res, err);
+    }
+  }
 }

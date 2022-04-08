@@ -25,9 +25,22 @@ export const ratingPlugin = (ratingSchema: Schema<RatingDocument>) => {
     return ratingReadDto;
   });
 
-  ratingSchema.post("remove", async function (next) {
+  ratingSchema.pre("save", async function (next) {
     try {
       console.log("document middleware invoked in rating plugin");
+      // movie update
+      const movieDocument = await Movie.findById(this.movie);
+      movieDocument!.ratings.push(this._id);
+      await Movie.findByIdAndUpdate(movieDocument!.id, movieDocument!);
+      next();
+    } catch (err: any) {
+      throw err;
+    }
+  });
+
+  ratingSchema.post("remove", async function (next) {
+    try {
+      console.log("query middleware invoked in rating plugin");
       const movieDocument = await Movie.findById(this.movie);
       const index = movieDocument!.ratings.indexOf(this._id);
       movieDocument!.ratings.splice(index, 1);

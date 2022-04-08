@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction, Router } from "express";
 import { ratingController } from "../dependencyInjection/rating";
+import { authorization } from "../middlewares";
 
 const router = Router();
 
@@ -13,6 +14,10 @@ router.get("/movie/user-continent", (req: Request, res: Response) =>
 
 router.get("/movie/user-gender", (req: Request, res: Response) =>
   ratingController.getSortedRatingsByUserGenderAndMovie(req, res)
+);
+
+router.post("/", (req: Request, res: Response) =>
+  ratingController.createRating(req, res)
 );
 
 export { router };
