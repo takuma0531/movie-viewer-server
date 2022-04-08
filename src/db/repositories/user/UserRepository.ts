@@ -6,6 +6,16 @@ export class UserRepository
   extends Repository<UserDocument>
   implements IUserRepository
 {
+  public override async getById(id: string): Promise<UserDocument> {
+    try {
+      let user = await super.getById(id);
+      user = await user!.populate("movies");
+      return user;
+    } catch (err: any) {
+      throw err;
+    }
+  }
+
   public async getSomeByName(name: string): Promise<UserDocument[] | null> {
     try {
       const users = await this._model.find({

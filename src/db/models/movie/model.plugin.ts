@@ -6,6 +6,9 @@ import { Director } from "../director/director.model";
 import { Genre } from "../genre/genre.model";
 import { Comment } from "../comment/comment.model";
 import { Rating } from "../rating/rating.model";
+import { RatingDocument } from "../../../typings/model/rating";
+import { User } from "../user/user.model";
+import { Movie } from "../movie/movie.model";
 
 export const moviePlugin = (movieSchema: Schema<MovieDocument>) => {
   movieSchema.static(
@@ -26,6 +29,8 @@ export const moviePlugin = (movieSchema: Schema<MovieDocument>) => {
       artists: this.artists,
       comments: this.comments,
       ratings: this.ratings,
+      averageRating: this.averageRating,
+      user: this.user,
     };
     return movieReadDto;
   });
@@ -33,6 +38,7 @@ export const moviePlugin = (movieSchema: Schema<MovieDocument>) => {
   movieSchema.pre("save", async function (next) {
     try {
       console.log("document middleware invoked in movie plugin");
+
       // artist update
       this.artists.forEach(async (artist) => {
         const artistDocument = await Artist.findById(artist);
@@ -56,23 +62,52 @@ export const moviePlugin = (movieSchema: Schema<MovieDocument>) => {
     }
   });
 
+  movieSchema.pre("updateOne", async function (next) {
+    try {
+      console.log("document middleware invoked in movie plugin (update)");
+      // average rating update
+      const movieDocument = await Movie.findById(this._id).populate("ratings");
+      const ratingPoints: number[] = [];
+      movieDocument!.ratings.forEach(
+        (rating: string | RatingDocument): void => {
+          const castedRating = rating as RatingDocument;
+          ratingPoints.push(castedRating.point);
+        }
+      );
+      const averageRating =
+        ratingPoints.reduce((prev, curr) => prev + curr) / ratingPoints.length;
+      movieDocument!.averageRating = averageRating;
+      await Movie.findByIdAndUpdate(movieDocument!.id, movieDocument!);
+
+      next();
+    } catch (err: any) {
+      throw err;
+    }
+  });
+
   movieSchema.post("remove", async function (res, next) {
     try {
       console.log("query middleware invoked in movie plugin");
+      // user update
+      const userDocument = await User.findById(this.user);
+      const indexForUser = userDocument!.movies.indexOf(this._id);
+      userDocument!.movies.splice(indexForUser, 1);
+      await User.findByIdAndUpdate(userDocument!.id, userDocument!);
+
       // artist update
       this.artists.forEach(async (artist) => {
         const artistDocument = await Artist.findById(artist);
         if (!artistDocument) throw "Something went wrong";
         const index = artistDocument.movies.indexOf(this._id);
         artistDocument.movies.splice(index, 1);
-        await Artist.findByIdAndUpdate(artistDocument);
+        await Artist.findByIdAndUpdate(artistDocument.id, artistDocument);
       });
       // director update
       const directorDocument = await Director.findById(this.director);
       if (!directorDocument) throw "Something went wrong";
       const indexForDirector = directorDocument.movies.indexOf(this._id);
       directorDocument.movies.splice(indexForDirector, 1);
-      await Director.findByIdAndUpdate(directorDocument);
+      await Director.findByIdAndUpdate(directorDocument.id, directorDocument);
       // genre update
       const genreDocument = await Genre.findById(this.genre);
       if (!genreDocument) throw "Something went wrong";

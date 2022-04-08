@@ -20,6 +20,7 @@ export const userPlugin = (userSchema: Schema<UserDocument>) => {
       role: this.role,
       age: this.age,
       gender: this.gender,
+      movies: this.movies,
     };
     return userReadDto;
   });

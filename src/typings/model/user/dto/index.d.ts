@@ -9,6 +9,7 @@ export interface UserReadDto extends BaseReadDto {
   role: User["role"];
   age: User["age"];
   gender: User["gender"];
+  movies?: User["movies"];
   authResult?: AuthorizedResult;
 }
 
@@ -20,6 +21,7 @@ export interface UserCreateDto extends BaseCreateDto {
   continent: User["continent"];
   role: User["role"];
   age: User["age"];
+  movies?: User["movies"];
 }
 
 export interface UserUpdateDto extends BaseUpdateDto {
@@ -29,6 +31,7 @@ export interface UserUpdateDto extends BaseUpdateDto {
   country?: User["country"];
   continent?: User["continent"];
   age?: User["age"];
+  movies?: User["movies"];
 }
 
 export interface UserLoginRequestDto {

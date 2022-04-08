@@ -1,5 +1,6 @@
 import { Model, Document } from "mongoose";
 import { IHasCustomMethod, IHasCustomStaticMethod } from "../base";
+import { MovieDocument } from "../movie";
 import { UserReadDto, UserCreateDto, UserUpdateDto } from "./dto";
 
 export interface User {
@@ -11,6 +12,7 @@ export interface User {
   role: number;
   age: number;
   gender: number;
+  movies: MovieDocument[] | string[];
 }
 
 export interface UserDocument extends User, Document, IHasCustomUserMethod {}

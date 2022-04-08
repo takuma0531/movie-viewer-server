@@ -4,6 +4,9 @@ import { MovieCreateDto, MovieReadDto } from "./dto";
 import { GenreDocument } from "../genre";
 import { ArtistDocument } from "../artist";
 import { DirectorDocument } from "../director";
+import { CommentDocument } from "../comment";
+import { RatingDocument } from "../rating";
+import { UserDocument } from "../user";
 
 export interface Movie {
   title: string;
@@ -12,8 +15,10 @@ export interface Movie {
   thumbnail: Buffer | string;
   director: string | DirectorDocument;
   artists: string[] | ArtistDocument[];
-  comments: string[] | any[]; // comment doc TODO:
-  ratings: string[] | any[];
+  comments: string[] | CommentDocument[];
+  ratings: string[] | RatingDocument[];
+  averageRating: number;
+  user: string | UserDocument;
 }
 
 export interface MovieDocument extends Movie, Document, IHasCustomMovieMethod {}

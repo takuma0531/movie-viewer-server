@@ -10,6 +10,8 @@ export interface MovieReadDto extends BaseReadDto {
   artists: Movie["artists"];
   comments?: Movie["comments"];
   ratings?: Movie["ratings"];
+  averageRating?: Movie["averageRating"];
+  user?: Movie["user"];
 }
 
 export interface MovieCreateDto extends BaseCreateDto {
@@ -21,6 +23,8 @@ export interface MovieCreateDto extends BaseCreateDto {
   artists: Movie["artists"];
   comments?: Movie["comments"];
   ratings?: Movie["ratings"];
+  averageRating?: Movie["averageRating"];
+  user?: Movie["user"];
 }
 
 export interface MovieUpdateDto extends BaseUpdateDto {
@@ -30,4 +34,5 @@ export interface MovieUpdateDto extends BaseUpdateDto {
   thumbnail?: Movie["thumbnail"];
   director?: Movie["director"];
   artists?: Movie["artists"];
+  averageRating?: Movie["averageRating"];
 }

@@ -37,6 +37,11 @@ const userSchema = new Schema<UserDocument>(
       type: Number,
       required: true,
     },
+    movies: [
+      {
+        type: Schema.Types.ObjectId,
+      },
+    ],
   },
   { timestamps: true }
 );
