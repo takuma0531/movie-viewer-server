@@ -39,15 +39,15 @@ export const moviePlugin = (movieSchema: Schema<MovieDocument>) => {
     try {
       console.log("document middleware invoked in movie plugin");
 
-      // artist update
+      // artist create
       this.artists.forEach(async (artist) => {
-        const artistDocument = await Artist.findById(artist);
+        const artistDocument = await Artist.create(artist);
         if (!artistDocument) throw "Something went wrong";
         artistDocument.movies.push(this._id);
         await Artist.findByIdAndUpdate(artistDocument.id, artistDocument);
       });
-      // director update
-      const directorDocument = await Director.findById(this.director);
+      // director create
+      const directorDocument = await Director.create(this.director);
       if (!directorDocument) throw "Something went wrong";
       directorDocument.movies.push(this._id);
       await Director.findByIdAndUpdate(directorDocument.id, directorDocument);
