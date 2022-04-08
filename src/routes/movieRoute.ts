@@ -26,8 +26,6 @@ router.post(
   "/",
   (req: Request, res: Response, next: NextFunction) =>
     authorization.verifyToken(req, res, next),
-  (req: Request, res: Response, next: NextFunction) =>
-    authorization.verifyIfUserIsAdmin(req, res, next),
   (req: Request, res: Response) => movieController.createMovie(req, res)
 );
 
@@ -36,8 +34,6 @@ router.put(
   "/",
   (req: Request, res: Response, next: NextFunction) =>
     authorization.verifyToken(req, res, next),
-  (req: Request, res: Response, next: NextFunction) =>
-    authorization.verifyIfUserIsAdmin(req, res, next),
   (req: Request, res: Response) => movieController.updateMovie(req, res)
 );
 
@@ -45,8 +41,6 @@ router.delete(
   "/",
   (req: Request, res: Response, next: NextFunction) =>
     authorization.verifyToken(req, res, next),
-  (req: Request, res: Response, next: NextFunction) =>
-    authorization.verifyIfUserIsAdmin(req, res, next),
   (req: Request, res: Response) => movieController.deleteMovie(req, res)
 );
 

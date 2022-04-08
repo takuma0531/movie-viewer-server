@@ -16,8 +16,11 @@ router.get("/movie/user-gender", (req: Request, res: Response) =>
   ratingController.getSortedRatingsByUserGenderAndMovie(req, res)
 );
 
-router.post("/", (req: Request, res: Response) =>
-  ratingController.createRating(req, res)
+router.post(
+  "/",
+  (req: Request, res: Response, next: NextFunction) =>
+    authorization.verifyToken(req, res, next),
+  (req: Request, res: Response) => ratingController.createRating(req, res)
 );
 
 export { router };

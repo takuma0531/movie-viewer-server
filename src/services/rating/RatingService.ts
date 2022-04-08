@@ -40,27 +40,27 @@ export class RatingService implements IRatingService {
       const ratingReadDtos = await this.getRatingsByMovie(movieId);
       if (!ratingReadDtos) return ratingReadDtos;
 
-      const ratingReadDtosByLte20: RatingReadDto[] = [];
-      const ratingReadDtosByLte40: RatingReadDto[] = [];
-      const ratingReadDtosByLet60: RatingReadDto[] = [];
-      const ratingReadDtosByGte61: RatingReadDto[] = [];
+      const ratingByLte20: number[] = [];
+      const ratingByLte40: number[] = [];
+      const ratingByLet60: number[] = [];
+      const ratingByGte61: number[] = [];
 
       ratingReadDtos.forEach((ratingReadDto: RatingReadDto) => {
         const castedUser = ratingReadDto.user as UserDocument;
         if (castedUser.age <= 20)
-          return ratingReadDtosByLte20.push(ratingReadDto);
+          return ratingByLte20.push(ratingReadDto.point);
         else if (castedUser.age <= 40)
-          return ratingReadDtosByLte40.push(ratingReadDto);
+          return ratingByLte40.push(ratingReadDto.point);
         else if (castedUser.age <= 60)
-          return ratingReadDtosByLet60.push(ratingReadDto);
-        else return ratingReadDtosByGte61.push(ratingReadDto);
+          return ratingByLet60.push(ratingReadDto.point);
+        else return ratingByGte61.push(ratingReadDto.point);
       });
 
       const ratingReadFilteredByUserAge: RatingReadDtosFilteredByUserAge = {
-        lte20: ratingReadDtosByLte20,
-        lte40: ratingReadDtosByLte40,
-        lte60: ratingReadDtosByLet60,
-        gte61: ratingReadDtosByGte61,
+        lte20: this.returnAverageRating(ratingByLte20),
+        lte40: this.returnAverageRating(ratingByLte40),
+        lte60: this.returnAverageRating(ratingByLet60),
+        gte61: this.returnAverageRating(ratingByGte61),
       };
       return ratingReadFilteredByUserAge;
     } catch (err: any) {
@@ -75,38 +75,39 @@ export class RatingService implements IRatingService {
       const ratingReadDtos = await this.getRatingsByMovie(movieId);
       if (!ratingReadDtos) return ratingReadDtos;
 
-      const asia: RatingReadDto[] = [];
-      const africa: RatingReadDto[] = [];
-      const europe: RatingReadDto[] = [];
-      const northAmerica: RatingReadDto[] = [];
-      const southAmerica: RatingReadDto[] = [];
-      const oceania: RatingReadDto[] = [];
-      const antarctica: RatingReadDto[] = [];
+      const asia: number[] = [];
+      const africa: number[] = [];
+      const europe: number[] = [];
+      const northAmerica: number[] = [];
+      const southAmerica: number[] = [];
+      const oceania: number[] = [];
+      const antarctica: number[] = [];
 
       ratingReadDtos.forEach((ratingReadDto: RatingReadDto) => {
         const castedUser = ratingReadDto.user as UserDocument;
-        if (castedUser.continent == "asia") return asia.push(ratingReadDto);
+        if (castedUser.continent == "asia")
+          return asia.push(ratingReadDto.point);
         else if (castedUser.continent == "africa")
-          return africa.push(ratingReadDto);
+          return africa.push(ratingReadDto.point);
         else if (castedUser.continent == "europe")
-          return europe.push(ratingReadDto);
+          return europe.push(ratingReadDto.point);
         else if (castedUser.continent == "northAmerica")
-          return northAmerica.push(ratingReadDto);
+          return northAmerica.push(ratingReadDto.point);
         else if (castedUser.continent == "southAmerica")
-          return southAmerica.push(ratingReadDto);
+          return southAmerica.push(ratingReadDto.point);
         else if (castedUser.continent == "oceania")
-          return oceania.push(ratingReadDto);
-        else return antarctica.push(ratingReadDto);
+          return oceania.push(ratingReadDto.point);
+        else return antarctica.push(ratingReadDto.point);
       });
 
       return {
-        asia,
-        africa,
-        europe,
-        northAmerica,
-        southAmerica,
-        oceania,
-        antarctica,
+        asia: this.returnAverageRating(asia),
+        africa: this.returnAverageRating(africa),
+        europe: this.returnAverageRating(europe),
+        northAmerica: this.returnAverageRating(northAmerica),
+        southAmerica: this.returnAverageRating(southAmerica),
+        oceania: this.returnAverageRating(oceania),
+        antarctica: this.returnAverageRating(antarctica),
       };
     } catch (err: any) {
       throw err;
@@ -120,22 +121,22 @@ export class RatingService implements IRatingService {
       const ratingReadDtos = await this.getRatingsByMovie(movieId);
       if (!ratingReadDtos) return null;
 
-      const ratingReadDtosByMale: RatingReadDto[] = [];
-      const ratingReadDtosByFemale: RatingReadDto[] = [];
-      const ratingReadDtosByUnknown: RatingReadDto[] = [];
+      const ratingByMale: number[] = [];
+      const ratingByFemale: number[] = [];
+      const ratingByUnknown: number[] = [];
 
       ratingReadDtos.forEach((ratingReadDto: RatingReadDto) => {
         const castedUser = ratingReadDto.user as UserDocument;
         if (castedUser.gender == Gender.MALE)
-          return ratingReadDtosByMale.push(ratingReadDto);
+          return ratingByMale.push(ratingReadDto.point);
         else if (castedUser.gender == Gender.FEMALE)
-          return ratingReadDtosByFemale.push(ratingReadDto);
-        else return ratingReadDtosByUnknown.push(ratingReadDto);
+          return ratingByFemale.push(ratingReadDto.point);
+        else return ratingByUnknown.push(ratingReadDto.point);
       });
       return {
-        male: ratingReadDtosByMale,
-        female: ratingReadDtosByFemale,
-        unknown: ratingReadDtosByUnknown,
+        male: this.returnAverageRating(ratingByMale),
+        female: this.returnAverageRating(ratingByFemale),
+        unknown: this.returnAverageRating(ratingByUnknown),
       };
     } catch (err: any) {
       throw err;
@@ -177,5 +178,11 @@ export class RatingService implements IRatingService {
     } catch (err: any) {
       throw err;
     }
+  }
+
+  private returnAverageRating(ratings: number[]): number {
+    const average =
+      ratings.reduce((prev, curr) => prev + curr) / ratings.length;
+    return average;
   }
 }

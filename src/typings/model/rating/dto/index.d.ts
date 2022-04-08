@@ -20,24 +20,24 @@ export interface RatingUpdateDto extends BaseUpdateDto {
 }
 
 export interface RatingReadDtosFilteredByUserAge {
-  lte20: RatingReadDto[];
-  lte40: RatingReadDto[];
-  lte60: RatingReadDto[];
-  gte61: RatingReadDto[];
+  lte20: number;
+  lte40: number;
+  lte60: number;
+  gte61: number;
 }
 
 export interface RatingReadDtosFilteredByUserLocation {
-  asia: RatingReadDto[];
-  africa: RatingReadDto[];
-  europe: RatingReadDto[];
-  northAmerica: RatingReadDto[];
-  southAmerica: RatingReadDto[];
-  oceania: RatingReadDto[];
-  antarctica: RatingReadDto[];
+  asia: number;
+  africa: number;
+  europe: number;
+  northAmerica: number;
+  southAmerica: number;
+  oceania: number;
+  antarctica: number;
 }
 
 export interface RatingReadDtosSortedByUserGender {
-  male: RatingReadDto[];
-  female: RatingReadDto[];
-  unknown: RatingReadDto[];
+  male: number;
+  female: number;
+  unknown: number;
 }

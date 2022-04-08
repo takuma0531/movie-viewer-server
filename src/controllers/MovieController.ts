@@ -68,7 +68,7 @@ export class MovieController extends BaseController {
 
   // @route     POST api/v1/movies
   // @desc      create a movie
-  // @access    private & admin only
+  // @access    private
   public async createMovie(req: Request, res: Response) {
     try {
       const movieCreateDto: MovieReadDto = req.body;
@@ -92,7 +92,7 @@ export class MovieController extends BaseController {
 
   // @route     PUT api/v1/movies
   // @desc      update a movie
-  // @access    private & admin only
+  // @access    private
   public async updateMovie(req: Request, res: Response) {
     try {
       const movieUpdateDto = req.body;
@@ -106,7 +106,7 @@ export class MovieController extends BaseController {
 
   // @route     DELELTE api/v1/movies/:id
   // @desc      delete a movie
-  // @access    private & admin only
+  // @access    private
   public async deleteMovie(req: Request, res: Response) {
     try {
       const { id } = req.params;
