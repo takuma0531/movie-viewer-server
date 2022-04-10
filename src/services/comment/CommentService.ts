@@ -7,9 +7,14 @@ import {
 import { Comment } from "../../db/models/comment/comment.model";
 import { ICommentRepository } from "../../db/repositories/comment/ICommentRepository";
 import { CommentDocument } from "../../typings/model/comment";
+import { RatingDocument } from "../../typings/model/rating";
+import { IRatingService } from "../rating/IRatingService";
 
 export class CommentService implements ICommentService {
-  constructor(private readonly _commentRepository: ICommentRepository) {}
+  constructor(
+    private readonly _commentRepository: ICommentRepository,
+    private readonly _ratingService: IRatingService
+  ) {}
 
   public async getAllComments(): Promise<CommentReadDto[] | null> {
     try {
@@ -62,6 +67,10 @@ export class CommentService implements ICommentService {
     commentCreateDto: CommentCreateDto
   ): Promise<CommentReadDto> {
     try {
+      const ratingReadDto = await this._ratingService.createRating(
+        commentCreateDto.rating as RatingDocument
+      );
+      commentCreateDto.rating = ratingReadDto.id;
       const commentDocumentToAdd = Comment.toDocument(commentCreateDto);
       const commentDocument = await this._commentRepository.add(
         commentDocumentToAdd
