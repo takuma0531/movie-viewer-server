@@ -13,7 +13,6 @@ import { BcryptService } from "../crypto/BcryptService";
 import { User } from "../../db/models/user/user.model";
 import { JwtConstants } from "../../config/constants";
 import { UserDocument } from "../../typings/model/user";
-import countryInfo from "../../assets/countryByContinent.json";
 
 export class UserService implements IUserService {
   constructor(
@@ -74,7 +73,6 @@ export class UserService implements IUserService {
       userCreateDto.password = await BcryptService.encrypt(
         userCreateDto.password
       );
-      // const continent = this.returnMatchedContinent(userCreateDto.country);
       const userDocumentToAdd = User.toDocument(userCreateDto);
       const userDocument = await this._userRepository.add(userDocumentToAdd);
 
@@ -103,10 +101,6 @@ export class UserService implements IUserService {
     userUpdateDto: UserUpdateDto
   ): Promise<UserReadDto | null> {
     try {
-      if (userUpdateDto.country) {
-        const continent = this.returnMatchedContinent(userUpdateDto.country);
-        if (continent) userUpdateDto.continent = continent;
-      }
       const userDocument = await this._userRepository.updateById(
         userUpdateDto.id!,
         userUpdateDto
@@ -179,16 +173,5 @@ export class UserService implements IUserService {
       expireIn: null,
       isAuthorized: false,
     };
-  }
-
-  private returnMatchedContinent(countryName: string): string | undefined {
-    try {
-      const foundCountryInfo = countryInfo.find(
-        (element) => element.country == countryName
-      );
-      return foundCountryInfo?.continent;
-    } catch (err: any) {
-      throw err;
-    }
   }
 }
