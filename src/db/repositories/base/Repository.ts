@@ -12,8 +12,11 @@ export class Repository<TDocument extends Document>
 
   public async add(document: TDocument): Promise<TDocument> {
     try {
-      const createdDocument = await this._model.create(document);
+      const createdDocument = new this._model(document);
+      await createdDocument.save();
       return createdDocument;
+      // const createdDocument = await this._model.create(document);
+      // return createdDocument;
     } catch (err) {
       throw err;
     }

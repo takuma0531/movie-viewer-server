@@ -55,6 +55,7 @@ export class UserController extends BaseController {
     try {
       const userCreateDto = req.body;
       if (!userCreateDto) return super.forbidden(res);
+      userCreateDto.role = 1;
       const existingUserReadDto = await this._userService.getUserByEmail(
         userCreateDto.email
       );

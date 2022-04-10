@@ -10,7 +10,6 @@ const artistSchema = new Schema<ArtistDocument>(
     },
     description: {
       type: String,
-      required: true,
     },
     movies: [
       {

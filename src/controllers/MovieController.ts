@@ -73,6 +73,8 @@ export class MovieController extends BaseController {
     try {
       const movieCreateDto: MovieReadDto = req.body;
       if (!movieCreateDto) return super.forbidden(res);
+      const { id } = req.userClaims;
+      movieCreateDto.user = id;
       const existingMovieReadDto = await this._movieService.getMovieByTitle(
         movieCreateDto.title
       );
@@ -86,6 +88,7 @@ export class MovieController extends BaseController {
       const movieReadDto = await this._movieService.createMovie(movieCreateDto);
       return super.created(res, movieReadDto);
     } catch (err: any) {
+      console.log(err);
       return super.internalServerError(res, err);
     }
   }

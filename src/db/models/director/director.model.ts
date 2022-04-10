@@ -13,7 +13,6 @@ const directorSchema = new Schema<DirectorDocument>(
     },
     description: {
       type: String,
-      required: true,
     },
     movies: [
       {

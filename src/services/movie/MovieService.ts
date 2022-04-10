@@ -7,9 +7,17 @@ import {
 import { IMovieRepository } from "../../db/repositories/movie/IMovieRepository";
 import { Movie } from "../../db/models/movie/movie.model";
 import { MovieDocument } from "../../typings/model/movie";
+import { IDirectorService } from "../director/IDirectorService";
+import { IArtistService } from "../artist/IArtistService";
+import { DirectorDocument } from "../../typings/model/director";
+import { ArtistDocument } from "../../typings/model/artist";
 
 export class MovieService implements IMovieService {
-  constructor(private readonly _movieRepository: IMovieRepository) {}
+  constructor(
+    private readonly _movieRepository: IMovieRepository,
+    private readonly _directorService: IDirectorService,
+    private readonly _artistService: IArtistService
+  ) {}
 
   public async getAllMovies(): Promise<MovieReadDto[]> {
     try {
@@ -65,6 +73,27 @@ export class MovieService implements IMovieService {
     movieCreateDto: MovieCreateDto
   ): Promise<MovieReadDto> {
     try {
+      const castedDirector = movieCreateDto.director as DirectorDocument;
+      if (castedDirector.name) {
+        const directorReadDto = await this._directorService.createDirector(
+          movieCreateDto.director as DirectorDocument
+        );
+        movieCreateDto.director = directorReadDto?.id as string;
+      }
+
+      const castedArtists = movieCreateDto.artists as ArtistDocument[];
+
+      TODO: // foreach execution should be waited
+      castedArtists.forEach(async (artist: ArtistDocument, index: number) => {
+        if (artist.name) {
+          const artistReadDto = await this._artistService.createArtist(artist);
+          movieCreateDto.artists[index] = artistReadDto.id as string;
+          console.log("foreach...");
+          console.log(artistReadDto.id);
+        }
+      });
+      console.log(movieCreateDto.artists);
+
       const movieDocumentToAdd = Movie.toDocument(movieCreateDto);
       const movieDocument = await this._movieRepository.add(movieDocumentToAdd);
       const movieReadDto = movieDocument.toReadDto();

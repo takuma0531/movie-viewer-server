@@ -7,6 +7,7 @@ import { Genre } from "../genre/genre.model";
 import { Comment } from "../comment/comment.model";
 import { Rating } from "../rating/rating.model";
 import { RatingDocument } from "../../../typings/model/rating";
+import { DirectorDocument } from "../../../typings/model/director";
 import { User } from "../user/user.model";
 import { Movie } from "../movie/movie.model";
 
@@ -39,18 +40,24 @@ export const moviePlugin = (movieSchema: Schema<MovieDocument>) => {
     try {
       console.log("document middleware invoked in movie plugin");
 
-      // artist create
-      this.artists.forEach(async (artist) => {
-        const artistDocument = await Artist.create(artist);
-        if (!artistDocument) throw "Something went wrong";
-        artistDocument.movies.push(this._id);
-        await Artist.findByIdAndUpdate(artistDocument.id, artistDocument);
-      });
-      // director create
-      const directorDocument = await Director.create(this.director);
-      if (!directorDocument) throw "Something went wrong";
-      directorDocument.movies.push(this._id);
-      await Director.findByIdAndUpdate(directorDocument.id, directorDocument);
+      // artist update
+      if (this.artists.length != 0) {
+        this.artists.forEach(async (artist) => {
+          const artistDocument = await Artist.findById(artist);
+          if (!artistDocument) throw "Something went wrong";
+          artistDocument.movies.push(this._id);
+          await Artist.findByIdAndUpdate(artistDocument.id, artistDocument);
+        });
+      }
+      // director update
+      const castedDirector = this.director as DirectorDocument;
+      if (castedDirector?.name) {
+        const directorDocument = await Director.findById(this.director);
+        if (!directorDocument) throw "Something went wrong";
+        this.director = directorDocument.id;
+        directorDocument.movies.push(this._id);
+        await Director.findByIdAndUpdate(directorDocument.id, directorDocument);
+      }
       // genre update
       const genreDocument = await Genre.findById(this.genre);
       if (!genreDocument) throw "Something went wrong";
