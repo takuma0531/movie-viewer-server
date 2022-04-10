@@ -14,7 +14,6 @@ import { User } from "../../db/models/user/user.model";
 import { JwtConstants } from "../../config/constants";
 import { UserDocument } from "../../typings/model/user";
 import countryInfo from "../../assets/countryByContinent.json";
-import { stringify } from "querystring";
 
 export class UserService implements IUserService {
   constructor(
@@ -50,8 +49,9 @@ export class UserService implements IUserService {
 
   public async getUserById(id: string): Promise<UserReadDto | null> {
     try {
-      const userReadDocument = await this._userRepository.getById(id);
-      return userReadDocument!.toReadDto();
+      const userDocument = await this._userRepository.getById(id);
+      if (!userDocument) return userDocument;
+      return userDocument.toReadDto();
     } catch (err: any) {
       throw err;
     }
@@ -60,7 +60,8 @@ export class UserService implements IUserService {
   public async getUserByEmail(email: string): Promise<UserReadDto | null> {
     try {
       const userDocument = await this._userRepository.getByEmail(email);
-      return userDocument!.toReadDto();
+      if (!userDocument) return userDocument;
+      return userDocument.toReadDto();
     } catch (err: any) {
       throw err;
     }
@@ -73,8 +74,7 @@ export class UserService implements IUserService {
       userCreateDto.password = await BcryptService.encrypt(
         userCreateDto.password
       );
-      const continent = this.returnMatchedContinent(userCreateDto.country);
-      if (continent) userCreateDto.continent = continent;
+      // const continent = this.returnMatchedContinent(userCreateDto.country);
       const userDocumentToAdd = User.toDocument(userCreateDto);
       const userDocument = await this._userRepository.add(userDocumentToAdd);
 
