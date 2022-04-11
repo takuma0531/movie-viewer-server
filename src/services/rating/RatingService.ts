@@ -64,6 +64,7 @@ export class RatingService implements IRatingService {
       };
       return ratingReadFilteredByUserAge;
     } catch (err: any) {
+      console.log(err);
       throw err;
     }
   }
@@ -197,8 +198,10 @@ export class RatingService implements IRatingService {
   }
 
   private returnAverageRating(ratings: number[]): number {
+    const initialValue = 0;
     const average =
-      ratings.reduce((prev, curr) => prev + curr) / ratings.length;
+      ratings.reduce((prev, curr) => prev + curr, initialValue) /
+      ratings.length;
     return average;
   }
 }
