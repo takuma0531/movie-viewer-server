@@ -27,4 +27,19 @@ export class RatingRepository
       throw err;
     }
   }
+
+  public async getByUserAndMovie(
+    userId: string,
+    movieId: string
+  ): Promise<RatingDocument | null> {
+    try {
+      const rating = await this._model.findOne({
+        user: userId,
+        movie: movieId,
+      });
+      return rating;
+    } catch (err: any) {
+      throw err;
+    }
+  }
 }

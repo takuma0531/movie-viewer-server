@@ -9,6 +9,7 @@ import { ICommentRepository } from "../../db/repositories/comment/ICommentReposi
 import { CommentDocument } from "../../typings/model/comment";
 import { RatingDocument } from "../../typings/model/rating";
 import { IRatingService } from "../rating/IRatingService";
+import { RatingReadDto } from "../../typings/model/rating/dto";
 
 export class CommentService implements ICommentService {
   constructor(
@@ -67,9 +68,26 @@ export class CommentService implements ICommentService {
     commentCreateDto: CommentCreateDto
   ): Promise<CommentReadDto> {
     try {
-      const ratingReadDto = await this._ratingService.createRating(
-        commentCreateDto.rating as RatingDocument
-      );
+      const existingRatingReadDto =
+        await this._ratingService.getRatingByUserIdAndMovieId(
+          commentCreateDto.user as string,
+          commentCreateDto.movie as string
+        );
+      let ratingReadDto: RatingReadDto | null;
+      if (existingRatingReadDto) {
+        const castedRating = commentCreateDto.rating as RatingDocument;
+        ratingReadDto = await this._ratingService.updateRating({
+          id: existingRatingReadDto.id,
+          point: castedRating.point,
+          user: commentCreateDto.user,
+          movie: commentCreateDto.movie,
+        });
+      } else {
+        ratingReadDto = await this._ratingService.createRating(
+          commentCreateDto.rating as RatingDocument
+        );
+      }
+      if (!ratingReadDto) throw "Something went wrong";
       commentCreateDto.rating = ratingReadDto.id;
       const commentDocumentToAdd = Comment.toDocument(commentCreateDto);
       const commentDocument = await this._commentRepository.add(

@@ -145,8 +145,24 @@ export class RatingService implements IRatingService {
 
   public async getRatingById(id: string): Promise<RatingReadDto | null> {
     try {
-      const ratingReadDto = await this._ratingRepository.getById(id);
-      return ratingReadDto;
+      const ratingDocument = await this._ratingRepository.getById(id);
+      return ratingDocument!.toReadDto();
+    } catch (err: any) {
+      throw err;
+    }
+  }
+
+  public async getRatingByUserIdAndMovieId(
+    userId: string,
+    movieId: string
+  ): Promise<RatingReadDto | null> {
+    try {
+      const ratingDocument = await this._ratingRepository.getByUserAndMovie(
+        userId,
+        movieId
+      );
+      if (!ratingDocument) return ratingDocument;
+      return ratingDocument.toReadDto();
     } catch (err: any) {
       throw err;
     }

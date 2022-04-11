@@ -19,6 +19,10 @@ export interface IRatingService {
     movieId: string
   ): Promise<RatingReadDtosSortedByUserGender | null>;
   getRatingById(id: string): Promise<RatingReadDto | null>;
+  getRatingByUserIdAndMovieId(
+    userId: string,
+    movieId: string
+  ): Promise<RatingReadDto | null>;
   createRating(ratingCreateDto: RatingCreateDto): Promise<RatingReadDto>;
   updateRating(ratingUpdateDto: RatingUpdateDto): Promise<RatingReadDto | null>;
 }

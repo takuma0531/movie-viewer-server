@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { IRatingService } from "../services/rating/IRatingService";
 import { BaseController } from "./BaseController";
+import { RatingReadDto } from "../typings/model/rating/dto";
 
 export class RatingController extends BaseController {
   constructor(private readonly _ratingService: IRatingService) {
@@ -72,7 +73,19 @@ export class RatingController extends BaseController {
       const { id } = req.userClaims;
       const rating = req.body;
       rating.user = id;
-      const ratingReadDto = await this._ratingService.createRating(rating);
+      const existingReadDto =
+        await this._ratingService.getRatingByUserIdAndMovieId(
+          rating.user,
+          rating.movie
+        );
+      let ratingReadDto: RatingReadDto | null;
+      if (existingReadDto)
+        ratingReadDto = await this._ratingService.updateRating({
+          ...rating,
+          id: existingReadDto.id,
+        });
+      else ratingReadDto = await this._ratingService.createRating(rating);
+
       return super.ok(res, ratingReadDto);
     } catch (err: any) {
       return super.internalServerError(res, err);
