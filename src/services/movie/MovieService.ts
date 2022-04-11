@@ -83,16 +83,12 @@ export class MovieService implements IMovieService {
 
       const castedArtists = movieCreateDto.artists as ArtistDocument[];
 
-      TODO: // foreach execution should be waited
-      castedArtists.forEach(async (artist: ArtistDocument, index: number) => {
-        if (artist.name) {
-          const artistReadDto = await this._artistService.createArtist(artist);
-          movieCreateDto.artists[index] = artistReadDto.id as string;
-          console.log("foreach...");
-          console.log(artistReadDto.id);
-        }
-      });
-      console.log(movieCreateDto.artists);
+      for (let i = 0; i < castedArtists.length; i++) {
+        const artistReadDto = await this._artistService.createArtist(
+          castedArtists[i]
+        );
+        movieCreateDto.artists[i] = artistReadDto.id as string;
+      }
 
       const movieDocumentToAdd = Movie.toDocument(movieCreateDto);
       const movieDocument = await this._movieRepository.add(movieDocumentToAdd);

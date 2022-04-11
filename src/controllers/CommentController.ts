@@ -67,7 +67,9 @@ export class CommentController extends BaseController {
   // @access    private
   public async createComment(req: Request, res: Response) {
     try {
+      const { id } = req.userClaims;
       const commentCreateDto = req.body;
+      commentCreateDto.user = id;
       const commentReadDto = await this._commentService.createComment(
         commentCreateDto
       );

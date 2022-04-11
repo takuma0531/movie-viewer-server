@@ -69,7 +69,9 @@ export class RatingController extends BaseController {
   // @access  private
   public async createRating(req: Request, res: Response) {
     try {
+      const { id } = req.userClaims;
       const rating = req.body;
+      rating.user = id;
       const ratingReadDto = await this._ratingService.createRating(rating);
       return super.ok(res, ratingReadDto);
     } catch (err: any) {

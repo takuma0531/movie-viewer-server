@@ -8,8 +8,11 @@ export class MovieRepository
 {
   public override async getById(id: string): Promise<MovieDocument> {
     try {
-      let movie = await super.getById(id);
-      movie = await movie!.populate("user");
+      const movie = (
+        await (
+          await (await super.getById(id))!.populate("user")
+        ).populate("director")
+      ).populate("artists");
       return movie;
     } catch (err: any) {
       throw err;
