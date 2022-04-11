@@ -10,9 +10,17 @@ export class MovieRepository
     try {
       const movie = (
         await (
-          await (await super.getById(id))!.populate("user")
-        ).populate("director")
-      ).populate("artists");
+          await (
+            await (await super.getById(id))!.populate("user")
+          ).populate("director")
+        ).populate("artists")
+      ).populate({
+        path: "comments",
+        populate: [
+          { path: "user", model: "User" },
+          { path: "rating", model: "Rating" },
+        ],
+      });
       return movie;
     } catch (err: any) {
       throw err;

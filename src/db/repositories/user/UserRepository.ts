@@ -8,8 +8,7 @@ export class UserRepository
 {
   public override async getById(id: string): Promise<UserDocument> {
     try {
-      let user = await super.getById(id);
-      user = await user!.populate("movies");
+      const user = (await super.getById(id))!.populate("movies");
       return user;
     } catch (err: any) {
       throw err;

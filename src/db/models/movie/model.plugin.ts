@@ -63,6 +63,11 @@ export const moviePlugin = (movieSchema: Schema<MovieDocument>) => {
       if (!genreDocument) throw "Something went wrong";
       genreDocument.movies.push(this.id);
       await Genre.findByIdAndUpdate(genreDocument.id, genreDocument);
+      // user update
+      const userDocument = await User.findById(this.user);
+      if (!userDocument) throw "Something went wrong";
+      userDocument.movies.push(this.id);
+      await User.findByIdAndUpdate(userDocument.id, userDocument);
       next();
     } catch (err: any) {
       throw err;

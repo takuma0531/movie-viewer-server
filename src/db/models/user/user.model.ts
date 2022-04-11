@@ -40,6 +40,7 @@ const userSchema = new Schema<UserDocument>(
     movies: [
       {
         type: Schema.Types.ObjectId,
+        ref: "Movie",
       },
     ],
   },
