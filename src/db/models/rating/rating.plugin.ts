@@ -44,6 +44,31 @@ export const ratingPlugin = (ratingSchema: Schema<RatingDocument>) => {
     }
   });
 
+  ratingSchema.pre("updateOne", async function (next) {
+    try {
+      console.log("document middleware invoked in rating plugin");
+      // movie update
+      const id = this.get("id");
+      const movie = this.get("movie");
+      const point = this.get("point");
+
+      const movieDocument = await Movie.findById(movie).populate("ratings");
+      const castedRatings = movieDocument!.ratings as RatingDocument[];
+      const indexOfChangedRating = castedRatings.findIndex(
+        (rating: RatingDocument) => rating.id == id
+      );
+      movieDocument!.averageRating = AverageCalculator.calculateAverage(
+        movieDocument!.ratings.length,
+        movieDocument!.averageRating,
+        point - castedRatings[indexOfChangedRating].point
+      );
+      await Movie.findByIdAndUpdate(movieDocument!.id, movieDocument!);
+      next();
+    } catch (err: any) {
+      throw err;
+    }
+  });
+
   ratingSchema.post("remove", async function (next) {
     try {
       console.log("query middleware invoked in rating plugin");

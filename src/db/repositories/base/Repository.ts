@@ -51,8 +51,9 @@ export class Repository<TDocument extends Document>
 
   public async updateById(id: string, data: any): Promise<TDocument | null> {
     try {
-      const document = await this._model.findByIdAndUpdate(id, data);
-      return await this.getById(document?._id);
+      await this._model.updateOne({ _id: id }, data);
+      // const document = await this._model.findByIdAndUpdate(id, data);
+      return await this.getById(id);
     } catch (err) {
       throw err;
     }
