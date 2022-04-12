@@ -23,7 +23,8 @@ export class MovieService implements IMovieService {
     try {
       const movieDocuments = await this._movieRepository.getAll();
       if (!movieDocuments) return movieDocuments;
-      return this.convertDocumentsToReadDtos(movieDocuments);
+      const reversedMovieDocuments = movieDocuments.reverse();
+      return this.convertDocumentsToReadDtos(reversedMovieDocuments);
     } catch (err: any) {
       throw err;
     }
@@ -43,7 +44,8 @@ export class MovieService implements IMovieService {
     try {
       const movieDocuments = await this._movieRepository.getSomeByTitle(title);
       if (!movieDocuments) return movieDocuments;
-      return this.convertDocumentsToReadDtos(movieDocuments);
+      const reversedMovieDocuments = movieDocuments.reverse();
+      return this.convertDocumentsToReadDtos(reversedMovieDocuments);
     } catch (err: any) {
       throw err;
     }
@@ -63,7 +65,8 @@ export class MovieService implements IMovieService {
     try {
       const movieDocuments = await this._movieRepository.getSomeLatest(limit);
       if (!movieDocuments) return movieDocuments;
-      return this.convertDocumentsToReadDtos(movieDocuments);
+      const reversedMovieDocuments = movieDocuments.reverse();
+      return this.convertDocumentsToReadDtos(reversedMovieDocuments);
     } catch (err: any) {
       throw err;
     }
