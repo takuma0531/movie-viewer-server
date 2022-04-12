@@ -84,7 +84,6 @@ export class MovieController extends BaseController {
           message: ResponseMessageHandler.returnResMsg("The movie"),
         });
       }
-      movieCreateDto.thumbnail = req.file?.filename;
       const movieReadDto = await this._movieService.createMovie(movieCreateDto);
       return super.created(res, movieReadDto);
     } catch (err: any) {

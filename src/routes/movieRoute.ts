@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction, Router } from "express";
 import { movieController } from "../dependencyInjection/movie";
 import { authorization } from "../middlewares";
-import { upload } from "../middlewares/ImageUploadHandler";
 
 const router = Router();
 
@@ -21,7 +20,6 @@ router.get("/recent", (req: Request, res: Response) =>
   movieController.getRecentMovies(req, res)
 );
 
-// upload image TODO:
 router.post(
   "/",
   (req: Request, res: Response, next: NextFunction) =>
@@ -29,7 +27,6 @@ router.post(
   (req: Request, res: Response) => movieController.createMovie(req, res)
 );
 
-// upload image TODO:
 router.put(
   "/",
   (req: Request, res: Response, next: NextFunction) =>
