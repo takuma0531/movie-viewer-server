@@ -30,14 +30,18 @@ export const ratingPlugin = (ratingSchema: Schema<RatingDocument>) => {
     try {
       console.log("document middleware invoked in rating plugin");
       // movie update
-      const movieDocument = await Movie.findById(this.movie);
-      movieDocument!.ratings.push(this._id);
+      const movieDocument = await Movie.findById(this.movie).populate(
+        "ratings"
+      );
+      if (!movieDocument) throw "Something went wrong";
       const castedRatings = movieDocument!.ratings as RatingDocument[];
       const points: number[] = [];
+      points.push(this.point);
       castedRatings.forEach((castedRating: RatingDocument) => {
         points.push(castedRating.point);
       });
       movieDocument!.averageRating = AverageCalculator.calculateAverage(points);
+      movieDocument!.ratings.push(this._id);
       await Movie.findByIdAndUpdate(movieDocument!.id, movieDocument!);
       next();
     } catch (err: any) {

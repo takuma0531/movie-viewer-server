@@ -86,7 +86,6 @@ export class RatingService implements IRatingService {
 
       ratingReadDtos.forEach((ratingReadDto: RatingReadDto) => {
         const castedUser = ratingReadDto.user as UserDocument;
-        console.log(castedUser.continent);
         if (castedUser.continent == "Asia")
           return asia.push(ratingReadDto.point);
         else if (castedUser.continent == "Africa")
