@@ -3,7 +3,6 @@ import { MovieReadDto } from "../typings/model/movie/dto";
 import { IMovieService } from "../services/movie/IMovieService";
 import { BaseController } from "./BaseController";
 import { ResponseMessageHandler } from "../utils/ResponseMessageHandler";
-import { unlinkAsync } from "../utils/FileDeletionHandler";
 
 export class MovieController extends BaseController {
   constructor(private readonly _movieService: IMovieService) {
@@ -79,7 +78,6 @@ export class MovieController extends BaseController {
         movieCreateDto.title
       );
       if (existingMovieReadDto != null) {
-        if (req.file?.path) await unlinkAsync(req.file.path);
         return super.ok(res, {
           message: ResponseMessageHandler.returnResMsg("The movie"),
         });
