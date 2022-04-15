@@ -83,6 +83,8 @@ export class CommentService implements ICommentService {
           movie: commentCreateDto.movie,
         });
       } else {
+        const castedRatingCreateDto = commentCreateDto.rating as RatingDocument;
+        castedRatingCreateDto.user = commentCreateDto.user;
         ratingReadDto = await this._ratingService.createRating(
           commentCreateDto.rating as RatingDocument
         );

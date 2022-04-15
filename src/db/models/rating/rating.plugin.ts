@@ -32,11 +32,12 @@ export const ratingPlugin = (ratingSchema: Schema<RatingDocument>) => {
       // movie update
       const movieDocument = await Movie.findById(this.movie);
       movieDocument!.ratings.push(this._id);
-      movieDocument!.averageRating = AverageCalculator.calculateAverage(
-        movieDocument!.ratings.length,
-        movieDocument!.averageRating,
-        this.point
-      );
+      const castedRatings = movieDocument!.ratings as RatingDocument[];
+      const points: number[] = [];
+      castedRatings.forEach((castedRating: RatingDocument) => {
+        points.push(castedRating.point);
+      });
+      movieDocument!.averageRating = AverageCalculator.calculateAverage(points);
       await Movie.findByIdAndUpdate(movieDocument!.id, movieDocument!);
       next();
     } catch (err: any) {
@@ -46,7 +47,7 @@ export const ratingPlugin = (ratingSchema: Schema<RatingDocument>) => {
 
   ratingSchema.pre("updateOne", async function (next) {
     try {
-      console.log("document middleware invoked in rating plugin");
+      console.log("document middleware invoked in rating plugin (update)");
       // movie update
       const id = this.get("id");
       const movie = this.get("movie");
@@ -54,14 +55,12 @@ export const ratingPlugin = (ratingSchema: Schema<RatingDocument>) => {
 
       const movieDocument = await Movie.findById(movie).populate("ratings");
       const castedRatings = movieDocument!.ratings as RatingDocument[];
-      const indexOfChangedRating = castedRatings.findIndex(
-        (rating: RatingDocument) => rating.id == id
-      );
-      movieDocument!.averageRating = AverageCalculator.calculateAverage(
-        movieDocument!.ratings.length,
-        movieDocument!.averageRating,
-        point - castedRatings[indexOfChangedRating].point
-      );
+      const points: number[] = [];
+      castedRatings.forEach((castedRating: RatingDocument) => {
+        if (castedRating.id != id) points.push(castedRating.point);
+        else points.push(Number(point));
+      });
+      movieDocument!.averageRating = AverageCalculator.calculateAverage(points);
       await Movie.findByIdAndUpdate(movieDocument!.id, movieDocument!);
       next();
     } catch (err: any) {
